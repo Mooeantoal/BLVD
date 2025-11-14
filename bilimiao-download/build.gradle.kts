@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        // targetSdk已弃用，使用新的配置方式
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

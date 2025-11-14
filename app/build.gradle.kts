@@ -20,7 +20,8 @@ android {
         versionCode = 116
         versionName = "2.4.8"
 
-        flavorDimensions("default")
+        // 使用新的flavorDimensions属性替代已弃用的函数
+        flavorDimensions += "default"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -72,12 +73,12 @@ android {
 
     productFlavors {
         create("full") {
-            dimension = flavorDimensionList[0]
+            dimension = "default"
             val channelName = project.properties["channel"] ?: "Unknown"
             manifestPlaceholders["channel"] = channelName
         }
         create("foss") {
-            dimension = flavorDimensionList[0]
+            dimension = "default"
             manifestPlaceholders["channel"] = "FOSS"
         }
     }
