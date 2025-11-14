@@ -20,3 +20,4 @@ rootProject.name = "bilimiao"
 include(":app")
 include(":bilimiao-download")
 include(":bilimiao-comm")
+include(":grpc-generator")
