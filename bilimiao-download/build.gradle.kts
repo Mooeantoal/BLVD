@@ -41,6 +41,7 @@ dependencies {
     implementation(Libraries.core)
     implementation(Libraries.appcompat)
     implementation(Libraries.material)
+    implementation(Libraries.lifecycleViewModel)  // 添加ViewModel依赖
 
     implementation(Libraries.kotlinxSerializationJson)
     implementation(Libraries.okhttp3)

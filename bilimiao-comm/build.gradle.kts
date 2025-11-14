@@ -93,6 +93,8 @@ dependencies {
     implementation(Libraries.appcompat)
     implementation(Libraries.material)
     implementation(Libraries.datastore)  // 添加DataStore依赖
+    implementation(Libraries.lifecycleViewModel)  // 添加ViewModel依赖
+    implementation(Libraries.browser)  // 添加browser依赖
 
     implementation(Libraries.kotlinxSerializationJson)
     implementation(Libraries.kotlinxCoroutinesAndroid)
@@ -106,6 +108,9 @@ dependencies {
     implementation(Libraries.pbandkRuntime)
 
     implementation("javax.annotation:javax.annotation-api:1.2")
+    
+    // 添加DanmakuFlameMaster依赖
+    implementation(project(":DanmakuFlameMaster"))
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)
