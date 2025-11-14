@@ -96,6 +96,7 @@
     <color name="red_dark">#C62828</color>
     <color name="red_trans">#99F44336</color>
     <color name="red_surface">#F5DDDA</color>
+    <color name="style_color">#fb7299</color>
 
 
     <color name="nightColorPrimary">#3b3b3b</color>
