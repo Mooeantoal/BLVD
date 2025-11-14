@@ -114,6 +114,7 @@ dependencies {
     implementation(Libraries.core)
     implementation(Libraries.appcompat)
     implementation(Libraries.material)
+    implementation(Libraries.datastore)  // 添加DataStore依赖
     
     implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 

@@ -92,11 +92,15 @@ dependencies {
     implementation(Libraries.core)
     implementation(Libraries.appcompat)
     implementation(Libraries.material)
+    implementation(Libraries.datastore)  // 添加DataStore依赖
 
     implementation(Libraries.kotlinxSerializationJson)
     implementation(Libraries.kotlinxCoroutinesAndroid)
     implementation(Libraries.kodeinDi)
     implementation(Libraries.glide)
+    implementation(Libraries.dialogX) {  // 添加DialogX依赖
+        exclude("com.github.kongzue.DialogX", "DialogXInterface")
+    }
 
     implementation(Libraries.okhttp3)
     implementation(Libraries.pbandkRuntime)
