@@ -1,7 +1,7 @@
 package com.a10miaomiao.bilimiao.comm.entity.video
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UgcEpisodeInfo(
@@ -58,5 +58,4 @@ data class Stat(
     val share: Int,
     val view: Int,
     val vt: Int,
-    val vv: Int
 )

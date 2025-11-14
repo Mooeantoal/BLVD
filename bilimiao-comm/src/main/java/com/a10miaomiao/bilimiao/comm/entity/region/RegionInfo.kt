@@ -1,7 +1,7 @@
 package com.a10miaomiao.bilimiao.comm.entity.region
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,10 +12,8 @@ import kotlinx.serialization.Serializable
 data class RegionInfo(
     var tid: Int,
     var reid: Int,
-    var icon: Int? = null,
-    var logo: String? = null,
     var name: String,
-    var uri: String? = null,
-    var type: Int,
-    var children: List<RegionChildrenInfo>? = null
+    var logo: String,
+    var type: Int = 0,
+    var children: List<RegionChildrenInfo> = listOf()
 ) : Parcelable
