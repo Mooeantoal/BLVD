@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-parcelize")
     id("bilimiao-build")
+    kotlin("plugin.compose")
     kotlin("plugin.serialization")
 }
 
