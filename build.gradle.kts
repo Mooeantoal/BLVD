@@ -19,8 +19,8 @@ buildscript {
 
 plugins {
     val kotlinVersion = "2.0.20"
-    id("com.android.application") version "8.5.1" apply false
-    id("com.android.library") version "8.5.1" apply false
+    id("com.android.application") version "8.6.1" apply false
+    id("com.android.library") version "8.6.1" apply false
     id("org.jetbrains.kotlin.android") version kotlinVersion apply false
     id("org.jetbrains.kotlin.plugin.compose") version kotlinVersion apply false
     id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion apply false
