@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("bilimiao-build")
+    id("com.google.protobuf")
     kotlin("plugin.serialization")
 }
 
@@ -65,7 +66,7 @@ protobuf {
         ).toFile()
         all().forEach { task ->
             task.plugins {
-                id("pbandk") {
+                create("pbandk").apply {
                     if (!generatorJarFile.exists()) {
                         task.dependsOn(":$generatorModule:jar")
                     }
