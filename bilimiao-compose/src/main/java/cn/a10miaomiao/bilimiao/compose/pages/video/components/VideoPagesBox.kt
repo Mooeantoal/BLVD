@@ -138,39 +138,3 @@ fun VideoPagesBox(
             }
         }
 }
-
-@Composable
-fun VideoPlayListBox(
-    onClick: () -> Unit,
-    count: Int? = null,
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 60.dp)
-            .padding(10.dp)
-    ) {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = if (count != null) "播放列表（${count}）" else "播放列表",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                TextButton(onClick = onClick) { Text("查看分P") }
-            }
-        }
-    }
-}
-
-}
