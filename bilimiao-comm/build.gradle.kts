@@ -41,10 +41,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            proto {
-                srcDir("src/main/proto")
-                include("**/*.proto")
-            }
+            // proto配置已移至protobuf块中
         }
     }
 }
@@ -59,6 +56,17 @@ protobuf {
             artifact = "pro.streem.pbandk:protoc-gen-pbandk-jvm:$pbandkVersion:jvm8@jar"
         }
     }
+    
+    // 配置proto源目录
+    sourceSets {
+        getByName("main") {
+            proto {
+                srcDir("src/main/proto")
+                include("**/*.proto")
+            }
+        }
+    }
+    
     generateProtoTasks {
         val generatorModule = "grpc-generator"
         val generatorClass = "cn.a10miaomiao.generator.GrpcServiceGenerator"
