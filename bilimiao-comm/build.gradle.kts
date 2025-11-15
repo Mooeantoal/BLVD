@@ -39,19 +39,23 @@ android {
     }
     namespace = "com.a10miaomiao.bilimiao.comm"
 
-    sourceSets["main"].proto {
-        srcDir("src/main/proto") // 模块下的proto文件夹
-        include("**/*.proto")
+    sourceSets {
+        getByName("main") {
+            proto {
+                srcDir("src/main/proto")
+                include("**/*.proto")
+            }
+        }
     }
 }
 
 protobuf {
     val pbandkVersion = Versions.pbandk
     protoc {
-        artifact = "com.google.protobuf:protoc:3.12.0"  // 相当于proto编译器
+        artifact = "com.google.protobuf:protoc:3.12.0"
     }
     plugins {
-        id("pbandk") {
+        create("pbandk") {
             artifact = "pro.streem.pbandk:protoc-gen-pbandk-jvm:$pbandkVersion:jvm8@jar"
         }
     }
