@@ -41,7 +41,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
+        kotlinCompilerExtensionVersion = "1.7.3"
     }
 
     namespace = "cn.a10miaomiao.bilimiao.compose"
