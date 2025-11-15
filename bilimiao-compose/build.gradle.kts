@@ -2,19 +2,16 @@ import cn.a10miaomiao.bilimiao.build.*
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-parcelize")
+    id("org.jetbrains.kotlin.android")
     id("bilimiao-build")
-    kotlin("plugin.compose")
-    kotlin("plugin.serialization")
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

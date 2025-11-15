@@ -1,18 +1,15 @@
-import com.google.protobuf.gradle.*
 import cn.a10miaomiao.bilimiao.build.*
 import java.nio.file.Paths
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    id("com.google.protobuf") // proto
+    id("org.jetbrains.kotlin.android")
     id("bilimiao-build")
     kotlin("plugin.serialization")
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
@@ -28,7 +25,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-               "proguard-rules.pro"
+                "proguard-rules.pro"
             )
         }
     }
@@ -46,7 +43,6 @@ android {
         include("**/*.proto")
     }
 }
-
 
 protobuf {
     val pbandkVersion = Versions.pbandk

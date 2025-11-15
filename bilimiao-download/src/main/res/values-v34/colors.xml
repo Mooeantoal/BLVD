@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- System background colors -->
+    <color name="system_background_dark">#121212</color>
+    <color name="system_error_dark">#f2b8b5</color>
+    <color name="system_error_container_dark">#8c1d18</color>
+    <color name="system_on_surface_light">#121212</color>
+    <color name="system_primary_light">#6750a4</color>
+    <color name="system_surface_light">#ffffff</color>
+    <color name="system_on_background_dark">#e0e0e0</color>
+    <color name="system_on_error_dark">#601410</color>
+    <color name="system_on_error_container_dark">#f9dedc</color>
+    <color name="system_on_primary_dark">#381e72</color>
+    <color name="system_on_primary_container_dark">#eaddff</color>
+    <color name="system_on_secondary_dark">#4a2573</color>
+    <color name="system_on_secondary_container_dark">#e8def8</color>
+    <color name="system_on_surface_dark">#e0e0e0</color>
+    <color name="system_on_surface_variant_dark">#cac4d0</color>
+    <color name="system_on_tertiary_dark">#633b48</color>
+    <color name="system_on_tertiary_container_dark">#ffd8e4</color>
+    <color name="system_outline_dark">#938f99</color>
+    <color name="system_outline_variant_dark">#49454f</color>
+    <color name="system_primary_dark">#d0bcff</color>
+</resources>

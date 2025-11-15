@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "cn.a10miaomiao.bilimiao.download"
-    compileSdk = 32
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 21
