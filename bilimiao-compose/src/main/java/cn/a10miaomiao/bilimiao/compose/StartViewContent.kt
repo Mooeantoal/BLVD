@@ -103,19 +103,16 @@ import cn.a10miaomiao.bilimiao.compose.common.addPaddingValues
 import cn.a10miaomiao.bilimiao.compose.common.foundation.ScaleIndication
 import cn.a10miaomiao.bilimiao.compose.components.miao.MiaoCard
 import cn.a10miaomiao.bilimiao.compose.components.start.StartLibraryCard
-import cn.a10miaomiao.bilimiao.compose.components.start.StartPlayerCard
 import cn.a10miaomiao.bilimiao.compose.components.start.StartSearchCard
 import cn.a10miaomiao.bilimiao.compose.components.start.StartUserCard
 import cn.a10miaomiao.bilimiao.compose.pages.auth.LoginPage
 import cn.a10miaomiao.bilimiao.compose.pages.bangumi.BangumiDetailPage
 import cn.a10miaomiao.bilimiao.compose.pages.download.DownloadListPage
-import cn.a10miaomiao.bilimiao.compose.pages.lyric.LyricPage
 import cn.a10miaomiao.bilimiao.compose.pages.message.MessagePage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.HistoryPage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.MyBangumiPage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.MyFollowPage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.WatchLaterPage
-import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.SettingPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.UserBangumiPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.UserFavouritePage
@@ -301,34 +298,7 @@ private fun StartIndexList(
                     .padding(bottom = 4.dp)
                     .fillMaxWidth()
             ) {
-                StartPlayerCard(
-                    aid = playerState.aid,
-                    title = playerState.title,
-                    cover = playerState.cover,
-                    onClick = {
-                        if (playerState.type === "video") {
-                            navigateTo(
-                                VideoDetailPage(
-                                    id = playerState.aid,
-                                )
-                            )
-                        } else if (playerState.type === "bangumi") {
-                            navigateTo(
-                                BangumiDetailPage(
-                                    id = playerState.sid,
-                                    epId = playerState.epid,
-                                )
-                            )
-                        }
-                    },
-                    onLyricClick = {
-                        navigateTo(LyricPage())
-                    },
-                    onPlayListClick = {
-                        navigateTo(PlayListPage())
-                    },
-                    onCloseClick = playerDelegate::closePlayer,
-                )
+                Spacer(modifier = Modifier.height(0.dp))
             }
         }
 

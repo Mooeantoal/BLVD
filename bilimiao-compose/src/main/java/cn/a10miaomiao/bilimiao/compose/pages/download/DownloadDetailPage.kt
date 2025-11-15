@@ -159,13 +159,7 @@ internal class DownloadDetailPageViewModel(
 
     fun itemClick(item: DownloadItemInfo) {
         if (item.is_completed) {
-            basePlayerDelegate.openPlayer(LocalPlayerSource(
-                activity = fragment.requireActivity(),
-                entryDirPath = item.dir_path,
-                id = item.id.toString(),
-                title = item.title,
-                coverUrl = item.cover,
-            ))
+            PopTip.show("此版本未提供播放")
         }
     }
 

@@ -300,18 +300,7 @@ private class WatchLaterPageViewModel(
 
     fun openVideo(item: ToViewItemInfo) {
         if (isAutoPlay && playerStore.state.aid != item.aid.toString()) {
-            playerDelegate.openPlayer(
-                VideoPlayerSource(
-                    mainTitle = item.title,
-                    title = item.title,
-                    coverUrl = item.pic,
-                    aid = item.aid.toString(),
-                    id = item.cid.toString(),
-                    ownerId = item.owner.mid,
-                    ownerName = item.owner.name,
-                )
-            )
-            setPlayList()
+            PopTip.show("此版本未提供播放")
         } else {
             toVideoDetail(item)
         }

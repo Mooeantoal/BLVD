@@ -58,6 +58,7 @@ import com.a10miaomiao.bilimiao.comm.network.BiliGRPCHttp
 import com.a10miaomiao.bilimiao.comm.store.PlayerStore
 import com.a10miaomiao.bilimiao.comm.utils.NumberUtil
 import com.a10miaomiao.bilimiao.store.WindowStore
+import com.kongzue.dialogx.dialogs.PopTip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -129,23 +130,7 @@ private class VideoPagesPageViewModel(
     }
 
     fun startPlayVideo(page: Page) {
-        val arc = arcInfo ?: return
-        val playerSource = VideoPlayerSource(
-            aid = aid,
-            id = page.cid.toString(),
-            coverUrl = arc.pic,
-            mainTitle = arc.title,
-            title = page.part,
-            ownerId = arc.author?.mid.toString(),
-            ownerName = arc.author?.name.toString(),
-        )
-        playerSource.pages = pages.value.map {
-            VideoPlayerSource.PageInfo(
-                cid = it.cid.toString(),
-                title = it.part,
-            )
-        }
-        basePlayerDelegate.openPlayer(playerSource)
+        PopTip.show("此版本未提供播放")
     }
 }
 

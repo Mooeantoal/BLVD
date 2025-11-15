@@ -141,11 +141,11 @@ private class SettingPageViewModel(
     }
 
     fun toVideoSettingPage() {
-        pageNavigation.navigate(VideoSettingPage())
+        com.kongzue.dialogx.dialogs.PopTip.show("此版本未提供播放设置")
     }
 
     fun toDanmakuSettingPage() {
-        pageNavigation.navigate(DanmakuSettingPage())
+        com.kongzue.dialogx.dialogs.PopTip.show("此版本未提供弹幕设置")
     }
 
     fun toFilterSettingPage() {

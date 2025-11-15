@@ -281,45 +281,7 @@ private class BangumiDetailPageViewModel(
     }
 
     fun startPlayBangumi(episodes: List<EpisodeInfo>, item: EpisodeInfo) {
-        val seasonDetail = detailInfo.value ?: return
-        val playerSource = BangumiPlayerSource(
-            sid = seasonDetail.season_id,
-            epid = item.id,
-            aid = item.aid,
-            id = item.cid,
-            title = item.long_title.ifBlank { item.title },
-            coverUrl = item.cover,
-            ownerId = "",
-            ownerName = seasonDetail.season_title
-        )
-
-        playerSource.episodes = episodes.map {
-            BangumiPlayerSource.EpisodeInfo(
-                epid = it.id, aid = it.aid, cid = it.cid,
-                cover = it.cover,
-                index = it.title,
-                index_title = it.long_title,
-                badge = it.badge,
-                badge_info = BangumiPlayerSource.EpisodeBadgeInfo(
-                    text = it.badge_info.text,
-                    bg_color = it.badge_info.bg_color,
-                    bg_color_night = it.badge_info.bg_color_night,
-                ),
-            )
-        }
-        playerSource.defaultPlayerSource.run {
-            val progress = detailInfo.value?.user_status?.progress
-            if (progress != null && item.id == progress.last_ep_id ) {
-                lastPlayCid = item.cid
-                lastPlayTime = progress.last_time * 1000L
-            }
-            val dimension = item.dimension
-            if (dimension != null) {
-                width = dimension.width
-                height = dimension.height
-            }
-        }
-        basePlayerDelegate.openPlayer(playerSource)
+        PopTip.show("此版本未提供播放")
     }
 
     fun menuItemClick(view: View, menuItem: MenuItemPropInfo) {

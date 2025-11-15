@@ -198,91 +198,7 @@ class VideoDetailViewModel(
         }
     }
     fun playVideo(page: Page) {
-        val detail = detailData.value ?: return
-        val arc = detail.getArcData() ?: return
-        val author = arc.author ?: return
-        videoAidToPlay = arc.aid.toString()
-        val viewPages = detail.pages
-        val ugcSeason = detail.getUgcSeasonData()
-        val title = if (viewPages.size > 1) {
-            page.part
-        } else {
-            arc.title
-        }
-        val cid = page.cid
-        val isAutoPlaySeason = this.isAutoPlaySeason
-        if (isAutoPlaySeason && ugcSeason != null) {
-            // 将合集加入播放列表
-            val playListFromId = (playListStore.state.from as? PlayListFrom.Season)?.seasonId
-                ?: (playListStore.state.from as? PlayListFrom.Section)?.seasonId
-            if (playListFromId != ugcSeason.id.toString() ||
-                !playListStore.state.inListForAid(arc.aid.toString())) {
-                // 当前播放列表来源不是当前合集或视频不在播放列表中时，创建新播放列表
-                // 以合集创建播放列表
-                val index = if (ugcSeason.sections.size > 1) {
-                    ugcSeason.sections.indexOfFirst { section ->
-                        section.episodes.indexOfFirst { it.aid == arc.aid } != -1
-                    }
-                } else { 0 }
-                playListStore.setPlayList(ugcSeason, index)
-            }
-        } else if (!playListStore.state.inListForAid(arc.aid.toString())) {
-            // 当前视频不在播放列表中时，如果未正在播放或播放列表为空则创建新的播放列表，否则将视频加入列表尾部
-            if (playListStore.state.items.isEmpty()
-                || playerStore.state.aid.isEmpty()) {
-                // 以当前视频创建新的播放列表
-                val playListItem = playListStore.run {
-                    arc.toPlayListItem(viewPages)
-                }
-                playListStore.setPlayList(
-                    name = arc.title,
-                    from = playListItem.from,
-                    items = listOf(
-                        playListItem,
-                    )
-                )
-            } else {
-                // 将视频添加到播放列表末尾
-                playListStore.addItem(playListStore.run {
-                    arc.toPlayListItem(viewPages)
-                })
-            }
-        }
-
-        // 播放视频
-        basePlayerDelegate.openPlayer(
-            VideoPlayerSource(
-                mainTitle = arc.title,
-                title = title,
-                coverUrl = arc.pic,
-                aid = arc.aid.toString(),
-                id = cid.toString(),
-                ownerId = author.mid.toString(),
-                ownerName = author.name,
-            ).apply {
-                pages = viewPages
-                    .mapNotNull {
-                        it.page
-                    }.map {
-                        VideoPlayerSource.PageInfo(
-                            cid = it.cid.toString(),
-                            title = it.part,
-                        )
-                    }
-                defaultPlayerSource.run {
-                    val history = detailData.value?.history
-                    if (history != null) {
-                        lastPlayCid = history.cid.toString()
-                        lastPlayTime = history.progress * 1000L
-                    }
-                    val dimension = arc.dimension
-                    if (dimension != null) {
-                        width = dimension.width.toInt()
-                        height = dimension.height.toInt()
-                    }
-                }
-            }
-        )
+        PopTip.show("此版本未提供播放")
     }
 
     /**
@@ -499,7 +415,7 @@ class VideoDetailViewModel(
     }
 
     fun toPlayListPage() {
-        pageNavigation.navigate(PlayListPage())
+        PopTip.show("此版本未提供播放列表")
     }
 
     fun toUgcSeasonPage(seasonId: String, seasonTitle: String) {

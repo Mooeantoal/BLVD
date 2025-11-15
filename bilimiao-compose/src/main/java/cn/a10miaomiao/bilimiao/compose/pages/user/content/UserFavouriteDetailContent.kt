@@ -50,7 +50,6 @@ import cn.a10miaomiao.bilimiao.compose.components.list.ListStateBox
 import cn.a10miaomiao.bilimiao.compose.components.list.SwipeToRefresh
 import cn.a10miaomiao.bilimiao.compose.components.video.VideoItemBox
 import cn.a10miaomiao.bilimiao.compose.pages.bangumi.BangumiDetailPage
-import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.UserFavouriteDetailPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.components.FavouriteEditForm
 import cn.a10miaomiao.bilimiao.compose.pages.user.components.FavouriteEditFormState
@@ -166,25 +165,8 @@ private class UserFavouriteDetailViewModel(
         val ugcInfo = item.ugc
         val ogvInfo = item.ogv
         if (isAutoPlay.value) {
-            if (ugcInfo != null) {
-                addPlayList()
-                if (playerStore.state.aid != item.id) {
-                    playerDelegate.openPlayer(
-                        VideoPlayerSource(
-                            mainTitle = item.title,
-                            title = item.title,
-                            coverUrl = item.cover,
-                            aid = item.id,
-                            id = ugcInfo.first_cid,
-                            ownerId = item.upper.mid,
-                            ownerName = item.upper.name,
-                        )
-                    )
-                }
-                return
-            } else {
-                PopTip.show("自动连播仅支持普通视频")
-            }
+            PopTip.show("此版本未提供播放")
+            return
         }
         if (ugcInfo != null) {
             pageNavigation.navigateToVideoInfo(item.id)
@@ -203,7 +185,7 @@ private class UserFavouriteDetailViewModel(
     }
 
     fun toPlayListPage() {
-        pageNavigation.navigate(PlayListPage())
+        PopTip.show("此版本未提供播放列表")
     }
 
     suspend fun editFolder(
