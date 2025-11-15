@@ -5,7 +5,6 @@ plugins {
     id("kotlin-android")
     id("kotlin-parcelize")
     id("bilimiao-build")
-    kotlin("plugin.compose")
     kotlin("plugin.serialization")
 }
 
@@ -40,6 +39,10 @@ android {
 
     buildFeatures {
         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     namespace = "cn.a10miaomiao.bilimiao.compose"
