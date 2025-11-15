@@ -253,6 +253,10 @@ fun VideoDetailContent(
                 Spacer(
                     modifier = Modifier.height(10.dp)
                 )
+                VideoPlayListBox(
+                    onClick = viewModel::openVideoPages,
+                    count = videoPages.size,
+                )
                 
             }
         }

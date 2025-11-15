@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,6 +47,7 @@ import com.kongzue.dialogx.dialogs.PopTip
 import org.kodein.di.compose.rememberInstance
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun StartLibraryCard(
     userId: Long?,
