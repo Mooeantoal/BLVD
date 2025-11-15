@@ -243,7 +243,7 @@ private fun VideoDetailPageContent(
                                     ?.part
                             } ?: "",
                             onClick = viewModel::playVideo,
-                            onLongClick = viewModel::openCoverActivity
+                            onLongClick = {}
                         )
                     }
                 }

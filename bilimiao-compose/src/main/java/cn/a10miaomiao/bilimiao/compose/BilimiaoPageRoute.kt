@@ -36,23 +36,18 @@ import cn.a10miaomiao.bilimiao.compose.pages.dynamic.DynamicOpusPage
 import cn.a10miaomiao.bilimiao.compose.pages.dynamic.DynamicPage
 import cn.a10miaomiao.bilimiao.compose.pages.filter.FilterSettingPage
 import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage
-import cn.a10miaomiao.bilimiao.compose.pages.lyric.LyricPage
 import cn.a10miaomiao.bilimiao.compose.pages.message.MessagePage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.HistoryPage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.MyBangumiPage
 import cn.a10miaomiao.bilimiao.compose.pages.mine.WatchLaterPage
-import cn.a10miaomiao.bilimiao.compose.pages.player.SendDanmakuPage
-import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import cn.a10miaomiao.bilimiao.compose.pages.rank.RankPage
 import cn.a10miaomiao.bilimiao.compose.pages.search.SearchResultPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.AboutPage
-import cn.a10miaomiao.bilimiao.compose.pages.setting.DanmakuDisplaySettingPage
-import cn.a10miaomiao.bilimiao.compose.pages.setting.DanmakuSettingPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.FlagsSettingPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.HomeSettingPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.ProxySettingPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.SettingPage
-import cn.a10miaomiao.bilimiao.compose.pages.setting.VideoSettingPage
+// removed pages: lyric/player/playlist/danmaku/video settings
 import cn.a10miaomiao.bilimiao.compose.pages.setting.proxy.AddProxyServerPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.proxy.EditProxyServerPage
 import cn.a10miaomiao.bilimiao.compose.pages.setting.proxy.SelectProxyServerPage
@@ -177,11 +172,7 @@ class BilimiaoPageRoute (
         // message
         composable<MessagePage>()
 
-        // player
-        composable<SendDanmakuPage>()
-
-        // playlist
-        composable<PlayListPage>()
+        // removed: player/playlist
 
         // setting
         composable<SettingPage>(
@@ -193,9 +184,7 @@ class BilimiaoPageRoute (
         )
         composable<HomeSettingPage>()
         composable<ThemeSettingPage>()
-        composable<VideoSettingPage>()
-        composable<DanmakuSettingPage>()
-        composable<DanmakuDisplaySettingPage>()
+        // removed: video/danmaku settings pages
         composable<FlagsSettingPage>()
         composable<ProxySettingPage>()
         composable<AddProxyServerPage>()
@@ -280,14 +269,7 @@ class BilimiaoPageRoute (
             )
         )
 
-        //lyric
-        composable<LyricPage>(
-            deepLinks = listOf(
-                navDeepLink<LyricPage>(
-                    basePath = "bilimiao://lyric"
-                )
-            )
-        )
+        // removed: lyric page
 
         // web
         composable<WebPage>(

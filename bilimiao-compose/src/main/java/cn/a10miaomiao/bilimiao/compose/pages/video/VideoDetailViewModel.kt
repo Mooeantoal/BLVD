@@ -16,7 +16,6 @@ import bilibili.app.view.v1.ViewReq
 import cn.a10miaomiao.bilimiao.compose.BilimiaoPageRoute
 import cn.a10miaomiao.bilimiao.compose.base.BottomSheetState
 import cn.a10miaomiao.bilimiao.compose.common.navigation.PageNavigation
-import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import cn.a10miaomiao.bilimiao.compose.pages.search.SearchResultPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.UserSeasonDetailPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.UserSpacePage
@@ -511,29 +510,10 @@ class VideoDetailViewModel(
                 PopTip.show("此版本未提供封面保存")
             }
             11 -> {
-                // 添加至下一个播放
-                val current = playerStore.getPlayListCurrentPosition()
-                if (current != -1) {
-                    playListStore.run {
-                        addItem(
-                            videoArc.toPlayListItem(viewPages),
-                            current + 1
-                        )
-                    }
-                    PopTip.show("已添加至下一个播放")
-                } else {
-                    PopTip.show("添加失败，找不到正在播放的视频")
-                }
+                PopTip.show("此版本未提供播放列表")
             }
             12 -> {
-                // 添加至最后一个播放
-                playListStore.run {
-                    addItem(
-                        videoArc.toPlayListItem(viewPages),
-                        state.items.size,
-                    )
-                }
-                PopTip.show("已添加至最后一个播放")
+                PopTip.show("此版本未提供播放列表")
             }
             13 -> {
                 // 添加至稍后再看

@@ -37,9 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.a10miaomiao.bilimiao.comm.store.PlayerStore
+// removed player store references
 import com.a10miaomiao.bilimiao.comm.utils.NumberUtil
-import org.kodein.di.compose.rememberInstance
 import org.kodein.di.instance
 
 @Composable
@@ -48,8 +47,7 @@ fun VideoPagesBox(
     onPageClick: (bilibili.app.archive.v1.Page) -> Unit,
     onMoreClick: () -> Unit,
 ) {
-    val playerStore by rememberInstance<PlayerStore>()
-    val currentPlay by playerStore.stateFlow.collectAsState()
+    
 
     Box(
         modifier = Modifier
@@ -68,7 +66,7 @@ fun VideoPagesBox(
         ) {
             items(pages.size, { pages[it].cid }) { index ->
                 val page = pages[index]
-                val isCurrentPlay = currentPlay.cid == page.cid.toString()
+                val isCurrentPlay = false
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -79,9 +77,7 @@ fun VideoPagesBox(
                         ),
                     shape = RoundedCornerShape(10.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    border = if (isCurrentPlay) BorderStroke(
-                        1.dp, color = MaterialTheme.colorScheme.primary
-                    ) else null
+                    border = null
                 ) {
                     Column(
                         modifier = Modifier
@@ -95,30 +91,18 @@ fun VideoPagesBox(
                         Text(
                             text = page.part,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (isCurrentPlay) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            if (isCurrentPlay) {
-                                Text(
-                                    text = "正在播放: P${index + 1}",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            } else {
-                                Text(
-                                    text = "P${index + 1} " + NumberUtil.converDuration(page.duration),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.outline
-                                )
-                            }
+                            Text(
+                                text = "P${index + 1} " + NumberUtil.converDuration(page.duration),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.outline
+                            )
                         }
                     }
                 }
