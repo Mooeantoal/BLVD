@@ -59,12 +59,8 @@ protobuf {
     
     // 配置proto源目录
     sourceSets {
-        getByName("main") {
-            proto {
-                srcDir("src/main/proto")
-                include("**/*.proto")
-            }
-        }
+        getByName("main").proto.srcDir("src/main/proto")
+        getByName("main").proto.include("**/*.proto")
     }
     
     generateProtoTasks {
