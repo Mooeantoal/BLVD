@@ -14,7 +14,7 @@
             android:id="@+id/content"
             android:layout_width="152dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/video_dialog_progress_bg"
+            android:background="@color/black"
             android:orientation="vertical">
 
             <ImageView
@@ -37,7 +37,7 @@
                     android:id="@+id/tv_current"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/style_color"
+                    android:textColor="@android:color/white"
                     android:textSize="14.0sp" />
 
                 <TextView
@@ -58,7 +58,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="16dp"
                 android:max="100"
-                android:progressDrawable="@drawable/video_dialog_progress" />
+                android:progressDrawable="@android:drawable/progress_horizontal" />
 
             <TextView
                 android:id="@+id/tv_offset"
