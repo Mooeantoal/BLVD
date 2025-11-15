@@ -20,7 +20,7 @@ android {
         versionCode = 116
         versionName = "2.4.8"
 
-        flavorDimensions("default")
+        flavorDimensions += "default"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -93,6 +93,9 @@ android {
         jvmTarget = "1.8"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
 
     lint {
         checkReleaseBuilds = false
