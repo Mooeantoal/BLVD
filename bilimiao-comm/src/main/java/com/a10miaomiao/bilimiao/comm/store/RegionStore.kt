@@ -150,8 +150,6 @@ class RegionStore(override val di: DI) :
      * 分区图标
      */
     private fun regionIcon(index: Int, item: RegionInfo) {
-        // 注释掉这段代码，因为RegionInfo类中没有icon属性
-        /*
         if (item.logo == null) {
             item.icon = intArrayOf(
                 R.drawable.ic_region_fj, R.drawable.ic_region_fj_domestic, R.drawable.ic_region_dh,
@@ -161,6 +159,5 @@ class RegionStore(override val di: DI) :
                 R.drawable.ic_region_ys, R.drawable.ic_region_dy, R.drawable.ic_region_dsj
             )[index]
         }
-        */
     }
 }

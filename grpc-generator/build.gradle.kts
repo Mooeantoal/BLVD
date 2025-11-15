@@ -1,3 +1,4 @@
+
 plugins {
     kotlin("jvm")
 }
@@ -8,16 +9,6 @@ kotlin {
 
 tasks.withType<JavaCompile>().all {
     enabled = false
-}
-
-// 添加jar任务配置
-tasks.jar {
-    archiveBaseName.set("grpc-generator")
-    from(sourceSets.main.get().output)
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
 }
 
 dependencies {

@@ -16,11 +16,9 @@ import com.a10miaomiao.bilimiao.widget.scaffold.AppBarView
 import com.a10miaomiao.bilimiao.widget.scaffold.ScaffoldView
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.AppBarBehavior
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.ContentBehavior
-import com.a10miaomiao.bilimiao.widget.scaffold.behavior.PlayerBehavior
 import com.a10miaomiao.bilimiao.config.config
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.DrawerBehavior
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.MaskBehavior
-import com.a10miaomiao.bilimiao.widget.player.DanmakuVideoPlayer
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.MyBottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import splitties.dimensions.dip
@@ -36,8 +34,6 @@ class MainUi(
 ) : Ui {
 
     companion object {
-        // 重启activiry时保持播放
-        private var keepPlayerView: DanmakuVideoPlayer? = null
     }
 
 //    val mLeftContainerView = inflate<FragmentContainerView>(R.layout.left_fragment) {
@@ -59,41 +55,7 @@ class MainUi(
         setOnClickListener {  }
     }
 
-    val mVideoPlayerView = keepPlayerView?.apply {
-        try {
-            (parent as? ViewGroup)?.removeAllViews()
-            // 直接替换旧PlayerView的Context
-            val clazz = View::class.java
-            val mContextField = clazz.getDeclaredField("mContext")
-            mContextField.isAccessible = true
-            if (mContextField.get(this) is Context) {
-                mContextField.set(this, ctx)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    } ?: inflate<DanmakuVideoPlayer>(R.layout.include_palyer2) {
-        keepPlayerView = this
-    }
-
-    val mPlayerLayout = frameLayout {
-        backgroundColor = 0xFF000000.toInt()
-//        elevation = dip(19).toFloat()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            outlineSpotShadowColor = config.shadowColor
-        }
-
-        val completionView = inflate<RelativeLayout>(R.layout.include_completion_box)
-        val errorMessageView = inflate<RelativeLayout>(R.layout.include_error_message_box)
-        val areaLimitView = inflate<RelativeLayout>(R.layout.include_area_limit_box)
-        val loadingView = inflate<FrameLayout>(R.layout.include_player_loading)
-
-        addView(mVideoPlayerView, lParams(matchParent, matchParent))
-        addView(completionView, lParams(matchParent, matchParent))
-        addView(errorMessageView, lParams(matchParent, matchParent))
-        addView(areaLimitView, lParams(matchParent, matchParent))
-        addView(loadingView, lParams(matchParent, matchParent))
-    }
+    
 
     var mMaskView = view<View> {
         setBackgroundResource(R.color.black)
@@ -138,11 +100,7 @@ class MainUi(
             width = matchParent
         })
 
-        addView(mPlayerLayout, lParams {
-            behavior = PlayerBehavior(ctx, null)
-            width = wrapContent
-            height = wrapContent
-        })
+        
 
 //        addView(frameLayout {
 //            backgroundColor = config.blockBackgroundColor

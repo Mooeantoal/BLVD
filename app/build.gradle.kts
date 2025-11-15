@@ -11,17 +11,16 @@ plugins {
 
 android {
     namespace = "com.a10miaomiao.bilimiao"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.a10miaomiao.bilimiao"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 116
         versionName = "2.4.8"
 
-        // 使用新的flavorDimensions属性替代已弃用的函数
-        flavorDimensions += "default"
+        flavorDimensions("default")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -73,12 +72,12 @@ android {
 
     productFlavors {
         create("full") {
-            dimension = "default"
+            dimension = flavorDimensionList[0]
             val channelName = project.properties["channel"] ?: "Unknown"
             manifestPlaceholders["channel"] = channelName
         }
         create("foss") {
-            dimension = "default"
+            dimension = flavorDimensionList[0]
             manifestPlaceholders["channel"] = "FOSS"
         }
     }
@@ -114,31 +113,44 @@ dependencies {
     implementation(Libraries.core)
     implementation(Libraries.appcompat)
     implementation(Libraries.material)
-    implementation(Libraries.datastore)  // 添加DataStore依赖
-    implementation(Libraries.lifecycleViewModel)  // 添加ViewModel依赖
-    
+    implementation(Libraries.lifecycle)
+    implementation(Libraries.lifecycleViewModel)
+    implementation(Libraries.datastore)
+    implementation(Libraries.media)
+    implementation(Libraries.browser)
     implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 
     implementation(Libraries.kotlinxCoroutinesAndroid)
     implementation(Libraries.kodeinDi) // 依赖注入
 
-    
+    implementation(Libraries.recyclerview)
+    implementation(Libraries.baseRecyclerViewAdapterHelper)
+    implementation(Libraries.swiperefreshlayout)
+    implementation(Libraries.foregroundCompat)
+    implementation(Libraries.drawer)
+    implementation(Libraries.dialogX) {
+        exclude("com.github.kongzue.DialogX", "DialogXInterface")
+    }
+    implementation(Libraries.materialKolor)
+
 //    implementation("com.github.li-xiaojun:XPopup:2.9.13")
 //    implementation("com.github.lihangleo2:ShadowLayout:3.2.4")
 
-    
-    
+    implementationSplitties()
 
-    
+    // 播放器相关（已移除）
+
     implementation(Libraries.okhttp3)
     implementation(Libraries.pbandkRuntime)
-    
+    implementation(Libraries.glide)
+    annotationProcessor(Libraries.glideCompiler)
+    implementation(Libraries.microgSafeParcel)
 
     implementation(project(":bilimiao-comm"))
     implementation(project(":bilimiao-download"))
+    implementation(project(":bilimiao-compose"))
 
-    // 闭源库：百度统计、极验验证
-    
+    // 闭源库（已移除）
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)

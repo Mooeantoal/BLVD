@@ -2,7 +2,7 @@ package com.a10miaomiao.bilimiao.comm.entity.video
 
 import android.os.Parcelable
 import com.a10miaomiao.bilimiao.comm.entity.user.MemberInfo
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 
 
@@ -58,4 +58,5 @@ data class VideoCommentReplyInfo(
         val time_desc: String? = null,
         val location: String? = null,
     ): Parcelable
+
 }

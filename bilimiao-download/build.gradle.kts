@@ -9,11 +9,11 @@ plugins {
 
 android {
     namespace = "cn.a10miaomiao.bilimiao.download"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        // targetSdk已弃用，使用新的配置方式
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -41,13 +41,13 @@ dependencies {
     implementation(Libraries.core)
     implementation(Libraries.appcompat)
     implementation(Libraries.material)
-    implementation(Libraries.lifecycleViewModel)  // 添加ViewModel依赖
 
     implementation(Libraries.kotlinxSerializationJson)
     implementation(Libraries.okhttp3)
     implementation(Libraries.pbandkRuntime)
 
     implementation(project(":bilimiao-comm"))
+    implementation(project(":DanmakuFlameMaster"))
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)

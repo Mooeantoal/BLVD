@@ -7,7 +7,6 @@ import androidx.annotation.IntDef
 import androidx.annotation.RestrictTo
 import androidx.core.view.ViewCompat
 import androidx.customview.widget.ViewDragHelper
-import com.a10miaomiao.bilimiao.widget.player.DanmakuVideoPlayer
 import com.a10miaomiao.bilimiao.widget.scaffold.ScaffoldView
 import com.a10miaomiao.bilimiao.widget.scaffold.ScaffoldView.PlayerViewPlaceStatus.LB
 import com.a10miaomiao.bilimiao.widget.scaffold.ScaffoldView.PlayerViewPlaceStatus.LT
@@ -32,16 +31,13 @@ class PlayerBehaviorDelegate(
     // 拖拽窗口边缘调整大小区域宽度
     private val dragWidth = parent.dip(12)
     private val holdButtonWidth
-        get() = danmakuVideoPlayer?.getHoldButtonWidth() ?: 0
+        get() = 0
 
     @DragState
     var dragState = ViewDragHelper.STATE_IDLE
         private set
 
-    private val danmakuVideoPlayer
-        get() = playerView.let { it as? ViewGroup }
-            ?.getChildAt(0)
-            ?.let { it as? DanmakuVideoPlayer }
+    
 
     private val draggerSettle: Runnable = object : Runnable {
         override fun run() {
@@ -93,15 +89,14 @@ class PlayerBehaviorDelegate(
     override fun onViewDragStateChanged(state: Int) {
         super.onViewDragStateChanged(state)
         dragState = state
-        if (state == ViewDragHelper.STATE_DRAGGING
-            && !parent.isHoldUpPlayer
-            && !parent.fullScreenDraggable) {
-            danmakuVideoPlayer?.showSmallDargBar()
-        }
+            if (state == ViewDragHelper.STATE_DRAGGING
+                && !parent.isHoldUpPlayer
+                && !parent.fullScreenDraggable) {
+            }
     }
 
     override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
-        danmakuVideoPlayer?.hideSmallDargBar()
+        
         val originWidth = playerWidth
         val originHeight = playerWidth
         //加上惯性后
