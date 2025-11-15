@@ -24,7 +24,6 @@ import cn.a10miaomiao.bilimiao.compose.pages.user.content.UserSeasonDetailConten
 import cn.a10miaomiao.bilimiao.compose.pages.video.components.VideoAddFavoriteDialogState
 import cn.a10miaomiao.bilimiao.compose.pages.video.components.VideoCoinDialogState
 import cn.a10miaomiao.bilimiao.compose.pages.video.components.VideoDownloadDialogState
-import cn.a10miaomiao.bilimiao.cover.CoverActivity
 import cn.a10miaomiao.bilimiao.download.DownloadService
 import com.a10miaomiao.bilimiao.comm.datastore.SettingConstants
 import com.a10miaomiao.bilimiao.comm.datastore.SettingPreferences
@@ -479,10 +478,7 @@ class VideoDetailViewModel(
         bottomSheetState.open(VideoPagesPage(arc.aid.toString()))
     }
 
-    fun openCoverActivity() {
-        val arc = detailData.value?.getArcData() ?: return
-        CoverActivity.launch(activity, arc.aid.toString())
-    }
+    
 
     fun toUserPage(mid: String) {
         pageNavigation.navigate(UserSpacePage(
@@ -596,8 +592,7 @@ class VideoDetailViewModel(
                 PopTip.show("已复制：$text")
             }
             6 -> {
-                // 保存封面
-                openCoverActivity()
+                PopTip.show("此版本未提供封面保存")
             }
             11 -> {
                 // 添加至下一个播放

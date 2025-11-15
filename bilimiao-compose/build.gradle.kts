@@ -97,7 +97,6 @@ dependencies {
 
     implementation(project(":bilimiao-comm"))
     implementation(project(":bilimiao-download"))
-    implementation(project(":bilimiao-cover"))
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)

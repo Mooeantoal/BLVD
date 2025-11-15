@@ -202,7 +202,7 @@ fun VideoDetailContent(
                             videoPages.find { it.cid == cid }?.part
                         } ?: "",
                         onClick = viewModel::playVideo,
-                        onLongClick = viewModel::openCoverActivity
+                        onLongClick = {}
                     )
                 }
                 VideoUpperBox(
