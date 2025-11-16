@@ -49,7 +49,7 @@ object ExceptionHandler {
          */
         class BusinessException(
             val code: Int,
-            val message: String
+            override val message: String
         ) : AppException(message)
         
         /**
@@ -165,9 +165,9 @@ object ExceptionHandler {
     /**
      * 将通用异常转换为应用特定异常
      */
-    fun wrapAsAppException(exception: Throwable, operation: String): AppException {
+        fun wrapAsAppException(exception: Throwable, operation: String): AppException {
         return when (exception) {
-            is IOException -> AppException.NetworkException(operation = operation, cause = exception)
+            is IOException -> AppException.NetworkException(operation, null, exception)
             is IllegalStateException, is IllegalArgumentException -> 
                 AppException.BusinessException(-1, "Invalid operation: $operation")
             else -> AppException.BusinessException(-1, "Unexpected error: ${exception.message ?: "unknown"}")
