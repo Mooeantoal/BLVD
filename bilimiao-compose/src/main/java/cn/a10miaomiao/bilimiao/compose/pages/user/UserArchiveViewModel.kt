@@ -32,16 +32,18 @@ class UserArchiveViewModel(
 
     val fragment: Fragment by instance()
     private val pageNavigation by instance<PageNavigation>()
-    //    var regionList = listOf<CheckPopupMenu.MenuItemInfo<Int>>(
-//        CheckPopupMenu.MenuItemInfo("全部(0)", 0),
-//    )
-//    var region = regionList[0]
-//
+    // 注释掉的区域筛选代码
+    // var regionList = listOf<CheckPopupMenu.MenuItemInfo<Int>>(
+    //     CheckPopupMenu.MenuItemInfo("全部(0)", 0),
+    // )
+    // var region = regionList[0]
+    //
 
     var rankOrder = MutableStateFlow("pubdate")
 
     val isRefreshing = MutableStateFlow(false)
-    //    var total = 0
+    // 注释掉的计数器代码
+    // var total = 0
     val list = FlowPaginationInfo<ArchiveInfo>()
     private var lastAid: String = ""
 
@@ -88,9 +90,10 @@ class UserArchiveViewModel(
                     }
                 }
                 lastAid = items.lastOrNull()?.param ?: ""
-//                if (region.value == 0) {
-//                    total = res.data.count
-//                }
+                // 注释掉的区域筛选统计代码
+                // if (region.value == 0) {
+                //     total = res.data.count
+                // }
                 list.finished.value = !res.requireData().has_next
             } else {
                 PopTip.show(res.message)

@@ -90,7 +90,8 @@ data class UserSpacePage(
         val viewModel = diViewModel() {
             UserSpaceViewModel(it, id, archiveViewModel)
         }
-//        AnimatedContent()
+        // 注释掉的动画内容函数
+        // AnimatedContent()
         UserSpacePageContent(viewModel, archiveViewModel)
     }
 }
@@ -106,9 +107,10 @@ private fun UserSpacePageContent(
     val windowInsets = windowState.getContentInsets(localContainerView())
 
     val detailData = viewModel.detailData.collectAsState().value
-//    val slideDistance = LocalDensity.current.run {
-//        100.dp.toPx()
-//    }
+    // 注释掉的滑动距离计算代码
+    // val slideDistance = LocalDensity.current.run {
+    //     100.dp.toPx()
+    // }
     AnimatedContent(
         modifier = Modifier.fillMaxSize(),
         targetState = detailData == null,

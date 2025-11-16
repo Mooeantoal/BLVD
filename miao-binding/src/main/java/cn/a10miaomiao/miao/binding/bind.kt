@@ -7,11 +7,11 @@ object Bind {
 typealias ViewBindingFn<T, V> = V.(T) -> Unit
 
 inline fun <T> miaoRef(initialTarget: T): MiaoBinding.RefData<T> {
-    return Bind.binding!!.let {
+    return Bind.binding?.let {
         it.persist()
         it.next(Unit, MiaoBinding.RefData(initialTarget))
-        it.cur().target as MiaoBinding.RefData<T>
-    }
+        TypeSafe.safeCast<MiaoBinding.RefData<T>>(it.cur().target, MiaoBinding.RefData(initialTarget))
+    } ?: throw IllegalStateException("Binding is not initialized. Please ensure MiaoBinding is properly set up.")
 }
 
 inline fun <T, V> V.miaoEffect(value: T, viewBinding: ViewBindingFn<T, V>) {
@@ -27,7 +27,8 @@ inline fun <T, V> V.miaoEffect(value: T, viewBinding: ViewBindingFn<T, V>, viewU
         viewBinding(realTarget, value)
     } else {
         Bind.binding?.cur()?.let {
-            viewUpdate(it.target as V, value)
+            val target = TypeSafe.safeCast<V>(it.target, this)
+            viewUpdate(target, value)
         }
     }
 }
@@ -37,5 +38,7 @@ inline fun <T, V> miaoMemo(value: V, initialMemo: (V) -> T): T {
     ref.miaoEffect(value) {
         ref.value = initialMemo(value)
     }
-    return ref.value as T
+    return TypeSafe.safeCast<T>(ref.value) { e ->
+        throw IllegalStateException("miaoMemo initialization failed: ${e.message}", e)
+    } ?: initialMemo(value)
 }

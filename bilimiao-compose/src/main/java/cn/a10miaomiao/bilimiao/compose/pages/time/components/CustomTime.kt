@@ -383,6 +383,7 @@ internal fun CustomTime(
     }
 }
 
+// 注释掉的预览函数
 //@Preview
 //@Composable
 //fun CustomTimePreview() {

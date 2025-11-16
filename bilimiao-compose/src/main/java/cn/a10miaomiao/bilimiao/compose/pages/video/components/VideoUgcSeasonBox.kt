@@ -100,25 +100,26 @@ fun VideoUgcSeasonBox(
                 )
             }
 
-//            if (ugcSeason.sections.size > 1) {
-//                LazyRow(
-//                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-//                    contentPadding = PaddingValues(horizontal = 5.dp),
-//                ) {
-//                    items(ugcSeason.sections.size) {
-//                        val s = ugcSeason.sections[it]
-//                        FilterChip(
-//                            selected = false,
-//                            onClick = {
-//
-//                            },
-//                            label = {
-//                                Text(text = s.title)
-//                            }
-//                        )
-//                    }
-//                }
-//            }
+            // 注释掉的选项卡选择器代码
+            // if (ugcSeason.sections.size > 1) {
+            //     LazyRow(
+            //         horizontalArrangement = Arrangement.spacedBy(5.dp),
+            //         contentPadding = PaddingValues(horizontal = 5.dp),
+            //     ) {
+            //         items(ugcSeason.sections.size) {
+            //             val s = ugcSeason.sections[it]
+            //             FilterChip(
+            //                 selected = false,
+            //                 onClick = {
+            //
+            //                 },
+            //                 label = {
+            //                     Text(text = s.title)
+            //                 }
+            //             )
+            //         }
+            //     }
+            // }
 
             Box(
                 modifier = Modifier.animateContentSize()

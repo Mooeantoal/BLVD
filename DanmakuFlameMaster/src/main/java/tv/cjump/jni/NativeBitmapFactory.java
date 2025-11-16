@@ -69,7 +69,7 @@ public class NativeBitmapFactory {
             }
         }
 
-        Log.e("NativeBitmapFactory", "loaded" + nativeLibLoaded);
+        // Log.e("NativeBitmapFactory", "loaded" + nativeLibLoaded);
     }
 
     public static synchronized void releaseLibs() {
@@ -79,7 +79,7 @@ public class NativeBitmapFactory {
         if (loaded) {
             release();
         }
-        // Log.e("NativeBitmapFactory", "released");
+        // Release log: // Log.e("NativeBitmapFactory", "released");
     }
 
     static void initField() {
@@ -119,7 +119,7 @@ public class NativeBitmapFactory {
             }
             return result;
         } catch (Exception e) {
-            Log.e("NativeBitmapFactory", "exception:" + e.toString());
+            // Log.e("NativeBitmapFactory", "exception:" + e.toString());
             return false;
         } catch (Error e) {
             return false;
@@ -155,7 +155,7 @@ public class NativeBitmapFactory {
 
     public static synchronized Bitmap createBitmap(int width, int height, Bitmap.Config config, boolean hasAlpha) {
         if (!nativeLibLoaded || nativeIntField == null) {
-            // Log.e("NativeBitmapFactory", "ndk bitmap create failed");
+            // Create bitmap log: // Log.e("NativeBitmapFactory", "ndk bitmap create failed");
             return Bitmap.createBitmap(width, height, config);
         }
         return createNativeBitmap(width, height, config, hasAlpha);
@@ -163,8 +163,8 @@ public class NativeBitmapFactory {
 
     private static Bitmap createNativeBitmap(int width, int height, Config config, boolean hasAlpha) {
         int nativeConfig = getNativeConfig(config);
-        // Log.e("NativeBitmapFactory", "nativeConfig:" + nativeConfig);
-        // Log.e("NativeBitmapFactory", "create bitmap:" + bitmap);
+        // Native config log: // Log.e("NativeBitmapFactory", "nativeConfig:" + nativeConfig);
+        // Create bitmap log: // Log.e("NativeBitmapFactory", "create bitmap:" + bitmap);
         return android.os.Build.VERSION.SDK_INT == 19 ? createBitmap19(width, height,
                 nativeConfig, hasAlpha) : createBitmap(width, height, nativeConfig, hasAlpha);
     }

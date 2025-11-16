@@ -165,12 +165,21 @@ class DensitySettingActivity : AppCompatActivity() {
                 setOnClickListener {
                     try {
                         val dipStr = dipEditText.text.toString()
-                        val dpi = dipStr.toInt()
+                        val dpi = TypeSafe.safeToInt(dipStr, 0)
+                        if (dpi == 0 && dipStr.isNotEmpty()) {
+                            PopTip.show("请输入有效的整数值")
+                            return@setOnClickListener
+                        }
                         val fontScaleStr = fontScaleEditText.text.toString()
-                        val fontScale = fontScaleStr.toFloat()
+                        val fontScale = TypeSafe.safeToFloat(fontScaleStr, 1.0f)
+                        if (fontScale == 0.0f && fontScaleStr.isNotEmpty()) {
+                            PopTip.show("请输入有效的数值")
+                            return@setOnClickListener
+                        }
                         activity.setCustomConfiguration(dpi, fontScale)
-                    } catch (ex: NumberFormatException) {
-                        PopTip.show("请输入整数")
+                    } catch (ex: Exception) {
+                        ExceptionHandler.handleException(ex, "Density setting")
+                        PopTip.show("设置失败，请输入有效数值")
                     }
                 }
             }, lParams(matchParent, wrapContent) {
