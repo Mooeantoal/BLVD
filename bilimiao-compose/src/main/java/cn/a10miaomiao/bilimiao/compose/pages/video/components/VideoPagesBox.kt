@@ -48,8 +48,6 @@ fun VideoPagesBox(
     onPageClick: (bilibili.app.archive.v1.Page) -> Unit,
     onMoreClick: () -> Unit,
 ) {
-    
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
