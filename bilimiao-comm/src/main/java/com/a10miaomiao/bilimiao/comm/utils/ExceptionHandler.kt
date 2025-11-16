@@ -23,7 +23,7 @@ object ExceptionHandler {
         /**
          * 网络异常
          */
-        data class NetworkException(
+        class NetworkException(
             val url: String? = null,
             val statusCode: Int? = null,
             cause: Throwable? = null
@@ -35,7 +35,7 @@ object ExceptionHandler {
         /**
          * 数据解析异常
          */
-        data class ParseException(
+        class ParseException(
             val dataType: String,
             val rawData: String? = null,
             cause: Throwable? = null
@@ -47,7 +47,7 @@ object ExceptionHandler {
         /**
          * 业务逻辑异常
          */
-        data class BusinessException(
+        class BusinessException(
             val code: Int,
             val message: String
         ) : AppException(message)
@@ -55,7 +55,7 @@ object ExceptionHandler {
         /**
          * 文件操作异常
          */
-        data class FileException(
+        class FileException(
             val operation: String,
             val filePath: String,
             cause: Throwable? = null

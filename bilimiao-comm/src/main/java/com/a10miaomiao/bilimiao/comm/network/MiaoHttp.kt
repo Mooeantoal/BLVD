@@ -133,7 +133,8 @@ class MiaoHttp(var url: String? = null) {
         fun Response.string(): String {
             return this.body?.string() ?: throw ExceptionHandler.AppException.ParseException(
                 dataType = "HTTP response body",
-                message = "Response body is null"
+                rawData = null,
+                cause = null
             )
         }
 

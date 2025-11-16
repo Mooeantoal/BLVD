@@ -80,7 +80,8 @@ class BiliGRPCHttp<ReqT : Message, RespT : Message>(
     private fun parseResponse(res: Response): RespT {
         var inputStream = res.body?.byteStream() ?: throw ExceptionHandler.AppException.ParseException(
             dataType = "GRPC response body",
-            message = "Response body is null"
+            rawData = null,
+            cause = null
         )
         
         return ExceptionHandler.safeResult("parse GRPC response") {
