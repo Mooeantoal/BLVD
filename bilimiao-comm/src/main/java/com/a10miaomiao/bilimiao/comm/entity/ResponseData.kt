@@ -13,5 +13,5 @@ data class ResponseData<T>(
     // 响应结果是否为成功
     val isSuccess get() = code == 0
 
-    fun requireData() = data!!
+    fun requireData(): T = data ?: throw IllegalStateException("Response data is null")
 }

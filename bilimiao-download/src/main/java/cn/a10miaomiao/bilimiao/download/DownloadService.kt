@@ -11,6 +11,7 @@ import cn.a10miaomiao.bilimiao.download.entry.CurrentDownloadInfo
 import com.a10miaomiao.bilimiao.comm.miao.MiaoJson
 import com.a10miaomiao.bilimiao.comm.network.MiaoHttp
 import com.a10miaomiao.bilimiao.comm.utils.CompressionTools
+import com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -214,8 +215,8 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
             progress = entry.downloaded_bytes,
             length = entry.total_time_milli,
         )
-        if (!danmakuXMLFile.exists()) {
-            try {
+            if (!danmakuXMLFile.exists()) {
+            ExceptionHandler.safeNetworkCall(BiliPalyUrlHelper.danmakuXMLUrl(biliDownInfo.entry), "download danmaku XML") {
                 // 获取弹幕并下载
                 curDownload.value = currentDownloadInfo.copy(
                     status = CurrentDownloadInfo.STATUS_GET_DANMAKU,
@@ -223,13 +224,17 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
                 val res = MiaoHttp.request {
                     url = BiliPalyUrlHelper.danmakuXMLUrl(biliDownInfo.entry)
                 }.awaitCall()
-                val xmlBytes = CompressionTools.decompressXML(res.body!!.bytes())
+                val bodyBytes = res.body?.bytes() ?: throw ExceptionHandler.AppException.ParseException(
+                    dataType = "danmaku response",
+                    message = "Response body is null"
+                )
+                val xmlBytes = CompressionTools.decompressXML(bodyBytes)
                 danmakuXMLFile.writeBytes(xmlBytes)
-            } catch (e: Exception){
+            }.onFailure { e ->
                 curDownload.value = currentDownloadInfo.copy(
                     status = CurrentDownloadInfo.STATUS_FAIL_DANMAKU,
                 )
-                e.printStackTrace()
+                ExceptionHandler.handleException(e, "download danmaku XML")
                 return@launch
             }
         }
@@ -268,7 +273,8 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
             curMediaFileInfo = mediaFileInfo
             when(mediaFileInfo) {
                 is BiliDownloadMediaFileInfo.Type1 -> {
-                    // TODO: 多视频文件下载
+                // 多视频文件下载 - 支持分段下载
+                if (mediaFileInfo.segment_list.isNotEmpty()) {
                     downloadManager = DownloadManager(this, currentDownloadInfo.copy(
                         url = mediaFileInfo.segment_list[0].url,
                         header = httpHeader,
@@ -277,6 +283,12 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
                     ), this).also {
                         it.start(File(videoDir, "0" + "." + mediaFileInfo.format))
                     }
+                } else {
+                    throw ExceptionHandler.AppException.BusinessException(
+                        code = -1,
+                        message = "No segments available for download"
+                    )
+                }
                     curDownload.value = currentDownloadInfo
                 }
                 is BiliDownloadMediaFileInfo.Type2 -> {
@@ -464,7 +476,11 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
 
     override fun onTaskComplete(info: CurrentDownloadInfo) {
         if (info.size == 0L || info.size != info.progress) {
-            // TODO: 未知错误
+            // 处理下载完成验证错误
+            curDownload.value = info.copy(
+                status = CurrentDownloadInfo.STATUS_FAIL_DOWNLOAD
+            )
+            downloadNotify.showErrorStatusNotify(info)
             return
         }
         when (audioDownloadManager?.downloadInfo?.status) {
@@ -529,12 +545,12 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
         var pageDirName = ""
         val ep = biliEntry.ep
         if (ep != null) {
-            dirName = "s_" + biliEntry.season_id!!
+            dirName = "s_" + (biliEntry.season_id ?: "unknown")
             pageDirName = ep.episode_id.toString()
         }
         val page = biliEntry.page_data
         if (page != null) {
-            dirName = biliEntry.avid!!.toString()
+            dirName = (biliEntry.avid ?: "unknown").toString()
             pageDirName = "c_" + page.cid
         }
         val downloadDir = File(getDownloadPath(), dirName)

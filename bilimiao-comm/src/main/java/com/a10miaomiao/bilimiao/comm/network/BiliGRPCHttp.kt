@@ -1,6 +1,7 @@
 package com.a10miaomiao.bilimiao.comm.network
 
 import com.a10miaomiao.bilimiao.comm.BilimiaoCommApp
+import com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler
 import com.a10miaomiao.bilimiao.comm.utils.miaoLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -77,16 +78,22 @@ class BiliGRPCHttp<ReqT : Message, RespT : Message>(
     }
 
     private fun parseResponse(res: Response): RespT {
-        var inputStream = res.body!!.byteStream()
-        inputStream.skip(5L)
+        var inputStream = res.body?.byteStream() ?: throw ExceptionHandler.AppException.ParseException(
+            dataType = "GRPC response body",
+            message = "Response body is null"
+        )
+        
+        return ExceptionHandler.safeResult("parse GRPC response") {
+            inputStream.skip(5L)
 
-        // 手动解压gzip
-        if (res.header(BiliHeaders.GRPCEncoding) == BiliHeaders.GRPCEncodingGZIP) {
-            inputStream = GZIPInputStream(inputStream)
-        }
+            // 手动解压gzip
+            if (res.header(BiliHeaders.GRPCEncoding) == BiliHeaders.GRPCEncodingGZIP) {
+                inputStream = GZIPInputStream(inputStream)
+            }
 
-        return method.respMessageCompanion
-            .decodeFromStream(inputStream)
+            method.respMessageCompanion
+                .decodeFromStream(inputStream)
+        }.getOrThrow()
     }
 
     suspend fun awaitCall(): RespT {
@@ -94,21 +101,24 @@ class BiliGRPCHttp<ReqT : Message, RespT : Message>(
             "name" to method.name,
             "reqMessage" to method.reqMessage
         )
-        return suspendCoroutine { continuation ->
-            val req = buildRequest()
-            client.newCall(req).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    continuation.resumeWithException(e)
-                }
-                override fun onResponse(call: Call, response: Response) {
-                    try {
-                        val respMessage = parseResponse(response)
-                        continuation.resume(respMessage)
-                    } catch (e: Exception) {
+        
+        return ExceptionHandler.safeNetworkCall(method.name, "GRPC await call") {
+            suspendCoroutine { continuation ->
+                val req = buildRequest()
+                client.newCall(req).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
                         continuation.resumeWithException(e)
                     }
-                }
-            })
-        }
+                    override fun onResponse(call: Call, response: Response) {
+                        try {
+                            val respMessage = parseResponse(response)
+                            continuation.resume(respMessage)
+                        } catch (e: Exception) {
+                            continuation.resumeWithException(e)
+                        }
+                    }
+                })
+            }
+        }.getOrThrow()
     }
 }

@@ -97,7 +97,7 @@ internal class DownloadDetailPageViewModel(
             var type = DownloadType.VIDEO
             val page = biliEntry.page_data
             if (page != null) {
-                id = biliEntry.avid!!
+                id = biliEntry.avid ?: throw IllegalStateException("avid is null for video entry")
                 indexTitle = page.download_title ?: "unknown"
                 cid = page.cid
                 type = DownloadType.VIDEO
@@ -106,7 +106,7 @@ internal class DownloadDetailPageViewModel(
             val ep = biliEntry.ep
             val source = biliEntry.source
             if (ep != null && source != null) {
-                id = biliEntry.season_id!!.toLong()
+                id = (biliEntry.season_id ?: throw IllegalStateException("season_id is null for bangumi entry")).toLong()
                 indexTitle = ep.index_title
                 epid = ep.episode_id
                 cid = source.cid
