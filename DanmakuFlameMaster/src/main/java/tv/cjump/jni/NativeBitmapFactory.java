@@ -43,11 +43,11 @@ public class NativeBitmapFactory {
                 nativeLibLoaded = false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            android.util.Log.e("NativeBitmapFactory", "Exception loading native library", e);
             notLoadAgain = true;
             nativeLibLoaded = false;
         } catch (Error e) {
-            e.printStackTrace();
+            android.util.Log.e("NativeBitmapFactory", "Error loading native library", e);
             notLoadAgain = true;
             nativeLibLoaded = false;
         }
@@ -88,7 +88,7 @@ public class NativeBitmapFactory {
             nativeIntField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             nativeIntField = null;
-            e.printStackTrace();
+            android.util.Log.w("NativeBitmapFactory", "No such field found", e);
         }
     }
 
@@ -138,9 +138,9 @@ public class NativeBitmapFactory {
             }
             return nativeIntField.getInt(config);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            android.util.Log.w("NativeBitmapFactory", "Illegal argument for native field", e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            android.util.Log.w("NativeBitmapFactory", "Illegal access to native field", e);
         }
         return 0;
     }

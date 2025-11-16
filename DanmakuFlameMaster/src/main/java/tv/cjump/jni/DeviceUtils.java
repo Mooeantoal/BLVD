@@ -59,15 +59,15 @@ public class DeviceUtils {
                         break;
                 }
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                android.util.Log.w("DeviceUtils", "File not found", e);
             } catch (IOException e) {
-                e.printStackTrace();
+                android.util.Log.w("DeviceUtils", "IO error reading file", e);
             } finally {
                 if (fp != null) {
                     try {
                         fp.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        android.util.Log.w("DeviceUtils", "Error closing file", e);
                     }
                 }
             }

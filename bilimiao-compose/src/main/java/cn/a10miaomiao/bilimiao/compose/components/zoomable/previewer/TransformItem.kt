@@ -147,10 +147,12 @@ class TransformItemState(
      * @param key Any?
      */
     fun addItem(key: Any? = null, itemMap: ItemStateMap) {
-        // TODO mutex
-        val currentKey = key ?: this.key
-        if (checkInBound != null) return
-        itemMap[currentKey] = this
+        // 使用同步机制确保线程安全
+        synchronized(itemMap) {
+            val currentKey = key ?: this.key
+            if (checkInBound != null) return
+            itemMap[currentKey] = this
+        }
     }
 
     /**
@@ -158,10 +160,12 @@ class TransformItemState(
      * @param key Any?
      */
     fun removeItem(key: Any? = null, itemMap: ItemStateMap) {
-        // TODO mutex
-        val currentKey = key ?: this.key
-        if (checkInBound != null) return
-        itemMap.remove(currentKey, this)
+        // 使用同步机制确保线程安全
+        synchronized(itemMap) {
+            val currentKey = key ?: this.key
+            if (checkInBound != null) return
+            itemMap.remove(currentKey, this)
+        }
     }
 }
 

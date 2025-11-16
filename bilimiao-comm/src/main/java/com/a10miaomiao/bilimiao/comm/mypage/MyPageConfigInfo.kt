@@ -3,7 +3,7 @@ package com.a10miaomiao.bilimiao.comm.mypage
 
 data class MyPageConfigInfo(
     var title: String = "",
-    @Deprecated("请使用menu")
+    @Deprecated("请使用menu", ReplaceWith("menu"), level = DeprecationLevel.WARNING)
     var menus: List<MenuItemPropInfo>? = null,
     var search: SearchConfigInfo? = null,
     var menu: MyPageMenu? = null,

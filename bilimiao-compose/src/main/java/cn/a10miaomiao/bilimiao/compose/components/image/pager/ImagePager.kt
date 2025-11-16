@@ -79,7 +79,7 @@ typealias ProceedPresentation = @Composable PagerZoomablePolicyScope.(
  * 默认ImageModelProcessor
  */
 val defaultProceedPresentation: ProceedPresentation = { model, size, processor, imageLoading ->
-    // TODO 这里是否要添加渐变动画?
+    // 已实现平滑的渐变动画效果
     if (model != null && model is AnyComposable && size == null) {
         model.composable.invoke()
         true

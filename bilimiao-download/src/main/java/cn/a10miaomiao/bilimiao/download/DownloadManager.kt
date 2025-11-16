@@ -142,7 +142,7 @@ class DownloadManager(
                 return if (contentLength == 0L) -1 else contentLength
             }
         } catch (e: IOException) {
-            e.printStackTrace()
+            com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler.handleException(e, "getContentLength")
         }
         return -1
     }

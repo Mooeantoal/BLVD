@@ -337,7 +337,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
             curDownload.value = currentDownloadInfo.copy(
                 status = CurrentDownloadInfo.STATUS_FAIL_PLAYURL,
             )
-            e.printStackTrace()
+            com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler.handleException(e, "getPlayUrl")
         }
     }
 
@@ -503,7 +503,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
     }
 
     override fun onTaskError(info: CurrentDownloadInfo, error: Throwable) {
-        error.printStackTrace()
+        com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler.handleException(error, "download task")
         curDownload.value = info.copy(
             status = CurrentDownloadInfo.STATUS_FAIL_DOWNLOAD
         )

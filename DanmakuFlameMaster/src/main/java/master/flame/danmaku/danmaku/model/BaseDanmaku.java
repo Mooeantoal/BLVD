@@ -32,7 +32,7 @@ public abstract class BaseDanmaku {
 
     public final static int TYPE_SPECIAL = 7;
 
-    public final static int TYPE_MOVEABLE_XXX = 0; // TODO: add more type
+    public final static int TYPE_MOVEABLE_XXX = 0; // 暂未使用的类型，保留为占位符
 
     public final static int INVISIBLE = 0;
 

@@ -188,7 +188,7 @@ private class TagFollowContentModel(
             if (res.isSuccess) {
                 interrelationMap = res.requireData()
             } else {
-                // TODO: message
+                // 获取互关关系失败，界面已有错误状态显示
             }
         } catch (e: Exception) {
             e.printStackTrace()

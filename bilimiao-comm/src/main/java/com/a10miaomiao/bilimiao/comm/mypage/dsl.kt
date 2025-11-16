@@ -12,9 +12,9 @@ fun Fragment.myPageConfig (init: MyPageConfigInfo.() -> Unit): MyPageConfig {
 
 @Deprecated(
     "请使用 myMenu + myItem",
-    ReplaceWith(
-    "myItem(init)"
-    )
+    ReplaceWith("myItem(init)"),
+    level = DeprecationLevel.WARNING
+)
 )
 fun myMenuItem (init: MenuItemPropInfo.() -> Unit): MenuItemPropInfo {
     return MenuItemPropInfo().apply(init)

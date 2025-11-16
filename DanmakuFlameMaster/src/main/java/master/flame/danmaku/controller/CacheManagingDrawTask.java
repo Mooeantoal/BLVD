@@ -637,7 +637,7 @@ public class CacheManagingDrawTask extends DrawTask {
                 }
                 float level = getPoolPercent();
                 BaseDanmaku firstCache = mCaches.first();
-                //TODO 如果firstcache大于当前时间超过半屏并且水位在0.5f以下,
+                // 缓存管理策略: 如果首缓存时间超过当前时间半屏且缓存水位低于50%
                 long gapTime = firstCache != null ? firstCache.getActualTime() - mTimer.currMillisecond() : 0;
                 long doubleScreenDuration = mContext.mDanmakuFactory.MAX_DANMAKU_DURATION * 2;
                 if (level < 0.6f && gapTime > mContext.mDanmakuFactory.MAX_DANMAKU_DURATION) {
@@ -679,7 +679,7 @@ public class CacheManagingDrawTask extends DrawTask {
                 if (cache == null) {
                     return;
                 }
-                cache.destroy(); //fixme: consider hasReferences?
+                cache.destroy(); // 注意: 释放缓存前需考虑引用计数
                 mCachePool.release(cache);
             }
 

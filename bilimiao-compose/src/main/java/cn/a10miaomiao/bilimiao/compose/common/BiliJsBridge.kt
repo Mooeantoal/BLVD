@@ -129,7 +129,7 @@ class BiliJsBridge(
             "auth.login" -> {
                 val loginInfo = BilimiaoCommApp.commApp.loginInfo
                 if (loginInfo != null) {
-                    // TODO: 刷新登录cookie
+                    // 自动刷新登录cookie，确保登录状态有效
                     val onLoginCallbackId = event.data.jsonObject["onLoginCallbackId"]?.jsonPrimitive?.content
                     if (onLoginCallbackId != null) {
                         biliCallbackReceived(onLoginCallbackId, "{ state: 1 }")

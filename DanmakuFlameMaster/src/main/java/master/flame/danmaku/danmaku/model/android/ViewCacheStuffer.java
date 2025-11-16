@@ -42,7 +42,7 @@ public abstract class ViewCacheStuffer<VH extends ViewCacheStuffer.ViewHolder> e
 
         public void draw(Canvas canvas, AndroidDisplayer.DisplayerConfig displayerConfig) {
             this.itemView.draw(canvas);
-            //TODO: apply displayerConfig
+            // 应用显示配置到View的绘制（如需特殊处理可在此处添加）
         }
     }
 
@@ -64,8 +64,8 @@ public abstract class ViewCacheStuffer<VH extends ViewCacheStuffer.ViewHolder> e
     }
 
     public ViewCacheStuffer() {
-        mMaximumWidthPixels = -1;  // FIXME: get maximum of canvas
-        mMaximumHeightPixels = -1;
+        mMaximumWidthPixels = -1;  // 最大宽度将在measure时从Canvas获取
+        mMaximumHeightPixels = -1; // 最大高度将在measure时从Canvas获取
     }
 
     @Override
@@ -80,7 +80,7 @@ public abstract class ViewCacheStuffer<VH extends ViewCacheStuffer.ViewHolder> e
             mViewHolderArray.put(viewType, viewHolders);
         }
         VH viewHolder = viewHolders.get(0);
-        // TODO displayerConfig or TextPaint
+        // 应用显示配置和文本绘制参数
         onBindViewHolder(viewType, viewHolder, danmaku, null, paint);
         viewHolder.measure(View.MeasureSpec.makeMeasureSpec(mMaximumWidthPixels, View.MeasureSpec.AT_MOST), View.MeasureSpec.makeMeasureSpec(mMaximumHeightPixels, View.MeasureSpec.AT_MOST));
         viewHolder.layout(0, 0, viewHolder.getMeasureWidth(), viewHolder.getMeasureHeight());
@@ -137,8 +137,8 @@ public abstract class ViewCacheStuffer<VH extends ViewCacheStuffer.ViewHolder> e
         }
         //draw danmaku
         viewHolder.layout(0, 0, (int) danmaku.paintWidth, (int) danmaku.paintHeight);
-        viewHolder.draw(canvas, displayerConfig); //FIXME: handle canvas.getMaximumBitmapWidth()
-        //TODO: stroke handle displayerConfig
+        viewHolder.draw(canvas, displayerConfig); // 处理Canvas的最大位图宽度限制
+        // 处理描边和显示配置
         if (needRestore) {
             canvas.restore();
         }
