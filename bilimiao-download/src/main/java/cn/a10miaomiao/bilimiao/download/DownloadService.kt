@@ -226,7 +226,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
                 }.awaitCall()
                 val bodyBytes = res.body?.bytes() ?: throw ExceptionHandler.AppException.ParseException(
                     dataType = "danmaku response",
-                    message = "Response body is null"
+                    cause = Exception("Response body is null")
                 )
                 val xmlBytes = CompressionTools.decompressXML(bodyBytes)
                 danmakuXMLFile.writeBytes(xmlBytes)
