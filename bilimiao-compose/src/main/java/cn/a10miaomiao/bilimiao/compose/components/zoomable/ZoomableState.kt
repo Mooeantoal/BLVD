@@ -109,7 +109,7 @@ open class ZoomableViewState(
         }
         get() {
             return if (contentSizeState.value?.isSpecified == true) {
-                TypeSafe.safeCast(contentSizeState.value, Size.Zero)
+                contentSizeState.value ?: Size.Zero
             } else {
                 Size.Zero
             }

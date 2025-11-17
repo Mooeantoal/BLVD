@@ -119,7 +119,7 @@ private class HomeRecommendContentViewModel(
                             && filterStore.filterWord(it.title)
                             && it.args != null
                             && it.args?.up_id != null
-                            && filterStore.filterUpper(it.args?.up_id ?: 0L)
+                            && filterStore.filterUpper((it.args?.up_id ?: "0").toLong())
                 }
                 val newList = if (idx == 0L) mutableListOf()
                 else list.data.value.toMutableList()
