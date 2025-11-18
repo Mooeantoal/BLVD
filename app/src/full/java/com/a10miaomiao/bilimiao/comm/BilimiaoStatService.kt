@@ -2,30 +2,29 @@ package com.a10miaomiao.bilimiao.comm
 
 import android.app.Activity
 import android.content.Context
-import com.baidu.mobstat.StatService
 
 /**
  * bilimiao统计服务
- * 目前接入百度移动统计
+ * 百度统计 SDK 已移除
  */
 object BilimiaoStatService {
 
     fun recordException(context: Context, e: Throwable) {
-        StatService.recordException(context, e)
+        // 百度统计已移除
     }
 
     fun setAuthorizedState(activity: Activity, agree: Boolean) {
-        StatService.setAuthorizedState(activity, agree)
+        // 百度统计已移除
     }
 
     fun start(activity: Activity) {
-        StatService.start(activity)
+        // 百度统计已移除
     }
     fun onResume(activity: Activity) {
-        StatService.onResume(activity)
+        // 百度统计已移除
     }
 
     fun onPause(activity: Activity) {
-        StatService.onPause(activity)
+        // 百度统计已移除
     }
 }
