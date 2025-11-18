@@ -113,7 +113,7 @@ class MainActivity
     
     private val statusBarHelper by lazy { StatusBarHelper(this) }
     private val supportHelper by lazy { SupportHelper(this) }
-    private val biliGeetestUtil: BiliGeetestUtil by lazy { BiliGeetestUtilImpl(this, lifecycle) }
+    private val biliGeetestUtil: BiliGeetestUtil by lazy { BiliGeetestUtilImpl() }
 
     private lateinit var navHostFragment: ComposeFragment
 
