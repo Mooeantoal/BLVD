@@ -39,7 +39,8 @@ import cn.a10miaomiao.bilimiao.compose.StartViewWrapper
 import cn.a10miaomiao.bilimiao.compose.base.ComposePage
 import cn.a10miaomiao.bilimiao.compose.base.PageSearchMethod
 import cn.a10miaomiao.bilimiao.compose.pages.search.SearchResultPage
-import com.a10miaomiao.bilimiao.comm.BiliGeetestUtilImpl
+import com.a10miaomiao.bilimiao.comm.utils.BiliGeetestUtil
+// import com.a10miaomiao.bilimiao.comm.BiliGeetestUtilImpl // 已移除
 import com.a10miaomiao.bilimiao.comm.BilimiaoStatService
 import com.a10miaomiao.bilimiao.comm.datastore.SettingConstants
 import com.a10miaomiao.bilimiao.comm.datastore.SettingPreferences
