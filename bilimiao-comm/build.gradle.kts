@@ -63,7 +63,7 @@ protobuf {
         val generatorClass = "cn.a10miaomiao.generator.GrpcServiceGenerator"
         // grpc-generator/build/libs/grpc-generator.jar
         val generatorJarFile = Paths.get(
-            project(":grpc-generator").buildDir.path,
+            project(":grpc-generator").layout.buildDirectory.get().asFile.path,
             "libs",
             "$generatorModule.jar"
         ).toFile()
