@@ -54,7 +54,6 @@ import com.a10miaomiao.bilimiao.comm.mypage.MyPopupMenu
 import com.a10miaomiao.bilimiao.comm.navigation.openBottomSheet
 import com.a10miaomiao.bilimiao.comm.network.BiliGRPCConfig
 import com.a10miaomiao.bilimiao.comm.scanner.BilimiaoScanner
-import com.a10miaomiao.bilimiao.comm.utils.BiliGeetestUtil
 import com.a10miaomiao.bilimiao.comm.utils.ScreenDpiUtil
 import com.a10miaomiao.bilimiao.comm.utils.miaoLogger
 import com.a10miaomiao.bilimiao.config.config
@@ -114,7 +113,7 @@ class MainActivity
     
     private val statusBarHelper by lazy { StatusBarHelper(this) }
     private val supportHelper by lazy { SupportHelper(this) }
-    private val biliGeetestUtil: BiliGeetestUtil by lazy { BiliGeetestUtilImpl() }
+    private val biliGeetestUtil: BiliGeetestUtil by lazy { createBiliGeetestUtil() }
 
     private lateinit var navHostFragment: ComposeFragment
 
@@ -695,6 +694,21 @@ class MainActivity
         ScreenDpiUtil.readCustomConfiguration(configuration)
         val newContext = newBase.createConfigurationContext(configuration)
         super.attachBaseContext(newContext)
+    }
+
+    private fun createBiliGeetestUtil(): BiliGeetestUtil {
+        return try {
+            // 尝试创建 full 版本的实现
+            val clazz = Class.forName("com.a10miaomiao.bilimiao.comm.BiliGeetestUtilImpl")
+            clazz.getDeclaredConstructor().newInstance() as BiliGeetestUtil
+        } catch (e: Exception) {
+            // 如果失败，创建一个空实现的实例
+            object : BiliGeetestUtil {
+                override fun startCustomFlow(gtCallBack: BiliGeetestUtil.GTCallBack) {
+                    // Geetest 功能已被移除
+                }
+            }
+        }
     }
 
 }

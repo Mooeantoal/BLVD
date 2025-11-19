@@ -7,7 +7,6 @@ import androidx.lifecycle.coroutineScope
 import com.a10miaomiao.bilimiao.activity.GeetestValidatorActivity
 import com.a10miaomiao.bilimiao.comm.utils.BiliGeetestUtil
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 import org.json.JSONObject
 
 class BiliGeetestUtilImpl(

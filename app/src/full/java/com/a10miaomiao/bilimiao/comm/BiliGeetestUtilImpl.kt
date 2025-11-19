@@ -1,7 +1,6 @@
 package com.a10miaomiao.bilimiao.comm
 
 import com.a10miaomiao.bilimiao.comm.utils.BiliGeetestUtil
-import kotlinx.serialization.Serializable
 import org.json.JSONObject
 
 // Geetest SDK 已移除，提供空实现
