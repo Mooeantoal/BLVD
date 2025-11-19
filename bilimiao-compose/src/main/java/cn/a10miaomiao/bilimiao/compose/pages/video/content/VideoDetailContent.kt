@@ -83,7 +83,12 @@ fun VideoDetailContent(
     isActive: Boolean,
 ) {
     val playerStore by rememberInstance<PlayerStore>()
+    val playListStore by rememberInstance<PlayListStore>()
+    val playListState by playListStore.stateFlow.collectAsState()
     val listPosition by playerStore.listPositionFlow.collectAsState()
+    var isExpandPlayList by remember {
+        mutableStateOf(false)
+    }
     val videoStat = arcData.stat
     val pages = viewModel.run { detailData.getPages() }
     val videoPages = remember(pages) {
@@ -197,7 +202,7 @@ fun VideoDetailContent(
                             videoPages.find { it.cid == cid }?.part
                         } ?: "",
                         onClick = viewModel::playVideo,
-                        onLongClick = {}
+                        onLongClick = viewModel::openCoverActivity
                     )
                 }
                 VideoUpperBox(
@@ -253,11 +258,41 @@ fun VideoDetailContent(
                 Spacer(
                     modifier = Modifier.height(10.dp)
                 )
-                VideoPlayListBox(
-                    onClick = viewModel::openVideoPages,
-                    count = videoPages.size,
-                )
-                
+                val ugcSeason = detailData.ugcSeason
+                    ?: detailData.activitySeason?.ugcSeason
+                if (!playListState.isEmpty()) {
+                    VideoPlayListBox(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp),
+                        viewModel = viewModel,
+                        arc = arcData,
+                        ugcSeason = ugcSeason,
+                        playListState = playListState,
+                        isExpand = isExpandPlayList,
+                        onChangeExpand = {
+                            isExpandPlayList = it
+                        }
+                    )
+                    Spacer(
+                        modifier = Modifier.height(10.dp)
+                    )
+                }
+                if (ugcSeason != null) {
+                    VideoUgcSeasonBox(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp),
+                        viewModel = viewModel,
+                        arc = arcData,
+                        ugcSeason = ugcSeason,
+                        isExpand = !isExpandPlayList,
+                        onChangeExpand = {
+                            isExpandPlayList = !it
+                        }
+                    )
+                    Spacer(
+                        modifier = Modifier.height(10.dp)
+                    )
+                }
             }
         }
         items(detailData.relates) {

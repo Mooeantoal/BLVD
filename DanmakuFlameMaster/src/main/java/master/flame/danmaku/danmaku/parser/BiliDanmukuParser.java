@@ -218,7 +218,7 @@ public class BiliDanmukuParser extends BaseDanmakuParser {
                         }
                     }
                     if (textArr.length >= 13) {
-                        // 字体配置: textArr[12] - 特殊弹幕的字体信息
+                        //TODO 字体 textArr[12]
                     }
                     if (textArr.length >= 14) {
                         // Linear.easeIn or Quadratic.easeOut

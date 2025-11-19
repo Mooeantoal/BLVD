@@ -18,6 +18,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "bilimiao"
 include(":app")
-include(":bilimiao-comm", ":bilimiao-download", ":bilimiao-compose")
+include(":bilimiao-comm", ":bilimiao-cover", ":bilimiao-download", "bilimiao-appwidget", "bilimiao-compose")
 include(":DanmakuFlameMaster")
+include(":benchmark")
 include(":grpc-generator")

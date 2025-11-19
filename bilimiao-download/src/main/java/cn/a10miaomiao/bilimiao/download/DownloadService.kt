@@ -11,7 +11,6 @@ import cn.a10miaomiao.bilimiao.download.entry.CurrentDownloadInfo
 import com.a10miaomiao.bilimiao.comm.miao.MiaoJson
 import com.a10miaomiao.bilimiao.comm.network.MiaoHttp
 import com.a10miaomiao.bilimiao.comm.utils.CompressionTools
-import com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -215,8 +214,8 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
             progress = entry.downloaded_bytes,
             length = entry.total_time_milli,
         )
-            if (!danmakuXMLFile.exists()) {
-            ExceptionHandler.safeNetworkCall(BiliPalyUrlHelper.danmakuXMLUrl(biliDownInfo.entry), "download danmaku XML") {
+        if (!danmakuXMLFile.exists()) {
+            try {
                 // 获取弹幕并下载
                 curDownload.value = currentDownloadInfo.copy(
                     status = CurrentDownloadInfo.STATUS_GET_DANMAKU,
@@ -224,17 +223,13 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
                 val res = MiaoHttp.request {
                     url = BiliPalyUrlHelper.danmakuXMLUrl(biliDownInfo.entry)
                 }.awaitCall()
-                val bodyBytes = res.body?.bytes() ?: throw ExceptionHandler.AppException.ParseException(
-                    dataType = "danmaku response",
-                    cause = Exception("Response body is null")
-                )
-                val xmlBytes = CompressionTools.decompressXML(bodyBytes)
+                val xmlBytes = CompressionTools.decompressXML(res.body!!.bytes())
                 danmakuXMLFile.writeBytes(xmlBytes)
-            }.onFailure { e ->
+            } catch (e: Exception){
                 curDownload.value = currentDownloadInfo.copy(
                     status = CurrentDownloadInfo.STATUS_FAIL_DANMAKU,
                 )
-                ExceptionHandler.handleException(e, "download danmaku XML")
+                e.printStackTrace()
                 return@launch
             }
         }
@@ -273,8 +268,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
             curMediaFileInfo = mediaFileInfo
             when(mediaFileInfo) {
                 is BiliDownloadMediaFileInfo.Type1 -> {
-                // 多视频文件下载 - 支持分段下载
-                if (mediaFileInfo.segment_list.isNotEmpty()) {
+                    // TODO: 多视频文件下载
                     downloadManager = DownloadManager(this, currentDownloadInfo.copy(
                         url = mediaFileInfo.segment_list[0].url,
                         header = httpHeader,
@@ -283,12 +277,6 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
                     ), this).also {
                         it.start(File(videoDir, "0" + "." + mediaFileInfo.format))
                     }
-                } else {
-                    throw ExceptionHandler.AppException.BusinessException(
-                        code = -1,
-                        message = "No segments available for download"
-                    )
-                }
                     curDownload.value = currentDownloadInfo
                 }
                 is BiliDownloadMediaFileInfo.Type2 -> {
@@ -337,7 +325,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
             curDownload.value = currentDownloadInfo.copy(
                 status = CurrentDownloadInfo.STATUS_FAIL_PLAYURL,
             )
-            com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler.handleException(e, "getPlayUrl")
+            e.printStackTrace()
         }
     }
 
@@ -476,11 +464,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
 
     override fun onTaskComplete(info: CurrentDownloadInfo) {
         if (info.size == 0L || info.size != info.progress) {
-            // 处理下载完成验证错误
-            curDownload.value = info.copy(
-                status = CurrentDownloadInfo.STATUS_FAIL_DOWNLOAD
-            )
-            downloadNotify.showErrorStatusNotify(info)
+            // TODO: 未知错误
             return
         }
         when (audioDownloadManager?.downloadInfo?.status) {
@@ -503,7 +487,7 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
     }
 
     override fun onTaskError(info: CurrentDownloadInfo, error: Throwable) {
-        com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler.handleException(error, "download task")
+        error.printStackTrace()
         curDownload.value = info.copy(
             status = CurrentDownloadInfo.STATUS_FAIL_DOWNLOAD
         )
@@ -545,12 +529,12 @@ class DownloadService: Service(), CoroutineScope, DownloadManager.Callback {
         var pageDirName = ""
         val ep = biliEntry.ep
         if (ep != null) {
-            dirName = "s_" + (biliEntry.season_id ?: "unknown")
+            dirName = "s_" + biliEntry.season_id!!
             pageDirName = ep.episode_id.toString()
         }
         val page = biliEntry.page_data
         if (page != null) {
-            dirName = (biliEntry.avid ?: "unknown").toString()
+            dirName = biliEntry.avid!!.toString()
             pageDirName = "c_" + page.cid
         }
         val downloadDir = File(getDownloadPath(), dirName)

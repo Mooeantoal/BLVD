@@ -38,7 +38,7 @@ android {
 
     flavorDimensions += listOf("default")
     productFlavors {
-        create("foss") { dimension = "default" }
+        create("full") { dimension = "default" }
     }
 
     targetProjectPath = ":app"

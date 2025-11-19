@@ -14,6 +14,7 @@ android {
 
     defaultConfig {
         minSdk = 21
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -39,10 +40,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.7.3"
     }
 
     namespace = "cn.a10miaomiao.bilimiao.compose"
@@ -100,6 +97,7 @@ dependencies {
 
     implementation(project(":bilimiao-comm"))
     implementation(project(":bilimiao-download"))
+    implementation(project(":bilimiao-cover"))
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)

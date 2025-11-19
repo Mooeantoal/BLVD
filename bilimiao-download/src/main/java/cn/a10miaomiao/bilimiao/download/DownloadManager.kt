@@ -80,8 +80,7 @@ class DownloadManager(
         }
         downloadLength += downloadedLength
         for (keys in info.header.keys) {
-            val headerValue = info.header[keys] ?: throw IllegalStateException("Header value for '$keys' is null")
-            request.addHeader(keys, headerValue)
+            request.addHeader(keys, info.header[keys]!!)
         }
         val call = mClient.newCall(request.build())
         val response = call.execute()
@@ -90,12 +89,12 @@ class DownloadManager(
         }
         downloadInfo.status = CurrentDownloadInfo.STATUS_DOWNLOADING
         var fileOutputStream: FileOutputStream? = null
-        val body = response.body ?: throw IllegalStateException("Response body is null")
+        val body = response.body!!
         if (info.size == 0L) {
             info.size = body.contentLength()
             emit(info)
         }
-        val `is` = body.byteStream()
+        val `is` = response.body!!.byteStream()
         val bis = BufferedInputStream(`is`)
         fileOutputStream = FileOutputStream(file, true)
         var buffer = ByteArray(2048) //缓冲数组2kB
@@ -137,12 +136,12 @@ class DownloadManager(
             val call = mClient.newCall(request)
             var response = call.execute()
             if (response != null && response.isSuccessful) {
-                val contentLength = response.body?.contentLength() ?: -1
+                val contentLength = response.body!!.contentLength()
                 call.cancel()
                 return if (contentLength == 0L) -1 else contentLength
             }
         } catch (e: IOException) {
-            com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler.handleException(e, "getContentLength")
+            e.printStackTrace()
         }
         return -1
     }

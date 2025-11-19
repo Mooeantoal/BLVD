@@ -131,7 +131,7 @@ private class HomePopularContentViewModel(
                 list.data.value = newList
             } else {
                 filterList.forEach {
-                    if (filterStore.filterTag(it.base?.param ?: "")) {
+                    if (filterStore.filterTag(it.base!!.param)) {
                         newList.add(it)
                         list.data.value = newList.toList()
                     }
@@ -253,7 +253,7 @@ internal fun HomePopularContent() {
             item {
                 EntranceListBox(viewModel)
             }
-            items(list, { it.base?.idx ?: 0L }) {
+            items(list, { it.base!!.idx }) {
                 VideoItemBox(
                     modifier = Modifier.padding(
                         horizontal = 10.dp,

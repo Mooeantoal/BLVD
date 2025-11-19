@@ -28,13 +28,13 @@ class BiliJsBridge(
     private val allSupportMethod = listOf<String>(
         "global.closeBrowser",
         "ui.setStatusBarMode",
-        // "auth.checkBridgeEnable",
+//       "auth.checkBridgeEnable",
         "auth.getUserInfo",
-        // "auth.getAccessToken",
-        // "auth.getBaseInfo",
-        // "auth.getAllBridge",
-        // "auth.getTeenable",
-        // "auth.getNetEnv",
+//      "auth.getAccessToken",
+//      "auth.getBaseInfo",
+//      "auth.getAllBridge",
+//      "auth.getTeenable",
+//       "auth.getNetEnv",
         "auth.login",
         "ability.openScheme",
         "ability.currentThemeType",
@@ -43,25 +43,25 @@ class BiliJsBridge(
         "view.toast",
         "view.refresh",
         "view.setTitle",
-        // "view.isLongScreen",
-        // "route.login",
-        // "route.editUserInfo",
-        // "route.record",
-        // "route.recommend",
-        // "share.showShareWindow",
+//        "view.isLongScreen",
+//        "route.login",
+//        "route.editUserInfo",
+//        "route.record",
+//        "route.recommend",
+//        "share.showShareWindow",
         "share.showShareMpcWindow",
-        // "func.route",
-        // "func.share",
-        // "func.setShare",
-        // "func.childrenOn",
-        // "func.childrenOff",
-        // "func.copy",
-        // "func.cloud-editor.sync",
-        // "func.creation-center.switchTabVisible",
-        // "func.fixWindow",
-        // "func.push.status",
-        // "func.vipDraw.result",
-        // "func.report.success",
+//            "func.route",
+//            "func.share",
+//            "func.setShare",
+//            "func.childrenOn",
+//            "func.childrenOff",
+//            "func.copy",
+//            "func.cloud-editor.sync",
+//            "func.creation-center.switchTabVisible",
+//            "func.fixWindow",
+//            "func.push.status",
+//            "func.vipDraw.result",
+//            "func.report.success",
     )
 
     @JavascriptInterface
@@ -129,7 +129,7 @@ class BiliJsBridge(
             "auth.login" -> {
                 val loginInfo = BilimiaoCommApp.commApp.loginInfo
                 if (loginInfo != null) {
-                    // 自动刷新登录cookie，确保登录状态有效
+                    // TODO: 刷新登录cookie
                     val onLoginCallbackId = event.data.jsonObject["onLoginCallbackId"]?.jsonPrimitive?.content
                     if (onLoginCallbackId != null) {
                         biliCallbackReceived(onLoginCallbackId, "{ state: 1 }")

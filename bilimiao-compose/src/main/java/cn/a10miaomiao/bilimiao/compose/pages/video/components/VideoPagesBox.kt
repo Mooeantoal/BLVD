@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -38,8 +37,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-// removed player store references
+import com.a10miaomiao.bilimiao.comm.store.PlayerStore
 import com.a10miaomiao.bilimiao.comm.utils.NumberUtil
+import org.kodein.di.compose.rememberInstance
 import org.kodein.di.instance
 
 @Composable
@@ -48,6 +48,9 @@ fun VideoPagesBox(
     onPageClick: (bilibili.app.archive.v1.Page) -> Unit,
     onMoreClick: () -> Unit,
 ) {
+    val playerStore by rememberInstance<PlayerStore>()
+    val currentPlay by playerStore.stateFlow.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,7 +68,7 @@ fun VideoPagesBox(
         ) {
             items(pages.size, { pages[it].cid }) { index ->
                 val page = pages[index]
-                val isCurrentPlay = false
+                val isCurrentPlay = currentPlay.cid == page.cid.toString()
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -76,7 +79,9 @@ fun VideoPagesBox(
                         ),
                     shape = RoundedCornerShape(10.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant,
-                    border = null
+                    border = if (isCurrentPlay) BorderStroke(
+                        1.dp, color = MaterialTheme.colorScheme.primary
+                    ) else null
                 ) {
                     Column(
                         modifier = Modifier
@@ -90,18 +95,30 @@ fun VideoPagesBox(
                         Text(
                             text = page.part,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = if (isCurrentPlay) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            },
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
-                            Text(
-                                text = "P${index + 1} " + NumberUtil.converDuration(page.duration),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.outline
-                            )
+                            if (isCurrentPlay) {
+                                Text(
+                                    text = "正在播放: P${index + 1}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            } else {
+                                Text(
+                                    text = "P${index + 1} " + NumberUtil.converDuration(page.duration),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.outline
+                                )
+                            }
                         }
                     }
                 }
@@ -136,4 +153,5 @@ fun VideoPagesBox(
             }
         }
     }
+
 }

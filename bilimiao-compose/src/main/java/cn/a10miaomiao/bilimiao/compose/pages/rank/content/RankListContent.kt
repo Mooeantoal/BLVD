@@ -81,16 +81,15 @@ private class RankListContentViewModel(
                     RankGRPC.rankRegion(req)
                 }
             }.awaitCall()
-            // 注释掉的过滤和计数代码
-            // var totalCount = 0 // 屏蔽前数量
-            // if (result.size < list.pageSize) {
-            //     ui.setState { list.finished = true }
-            // }
-            // totalCount = result.size
-            // result = result.filter {
-            //     filterStore.filterWord(it.title)
-            //             && filterStore.filterUpper(it.mid.toLong())
-            // }
+//            var totalCount = 0 // 屏蔽前数量
+//            if (result.size < list.pageSize) {
+//                ui.setState { list.finished = true }
+//            }
+//            totalCount = result.size
+//            result = result.filter {
+//                filterStore.filterWord(it.title)
+//                        && filterStore.filterUpper(it.mid.toLong())
+//            }
             if (pageNum == 1) {
                 list.data.value = result.items
             } else {
@@ -99,10 +98,9 @@ private class RankListContentViewModel(
                     .also { it.addAll(result.items) }
             }
             list.pageNum = pageNum
-            // 注释掉的自动加载更多代码
-            // if (list.data.size < 10 && totalCount != result.size) {
-            //     _loadData(pageNum + 1)
-            // }
+//            if (list.data.size < 10 && totalCount != result.size) {
+//                _loadData(pageNum + 1)
+//            }
         } catch (e: Exception) {
             e.printStackTrace()
             list.fail.value = "无法连接到御坂网络"

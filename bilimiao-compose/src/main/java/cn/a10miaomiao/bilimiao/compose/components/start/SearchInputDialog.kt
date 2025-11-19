@@ -216,10 +216,9 @@ fun SearchInputDialog(
                                 unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
                             )
                         )
-                        // 注释掉的搜索按钮代码
-                        // IconButton(onClick = { startSearch(text) }) {
-                        //     Icon(Icons.Default.Search, contentDescription = "搜索")
-                        // }
+//                        IconButton(onClick = { startSearch(text) }) {
+//                            Icon(Icons.Default.Search, contentDescription = "搜索")
+//                        }
                     }
                 }
             }

@@ -2,7 +2,7 @@ package com.a10miaomiao.bilimiao.comm.entity.player
 
 import android.os.Parcelable
 import com.a10miaomiao.bilimiao.comm.delegate.player.VideoPlayerSource
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlayListItemInfo(

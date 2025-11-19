@@ -185,7 +185,32 @@ private class BangumiEpisodesPageViewModel(
     }
 
     fun startPlayBangumi(item: EpisodeInfo) {
-        PopTip.show("此版本未提供播放")
+        val episodes = currentSection.value.episodes
+        val playerSource = BangumiPlayerSource(
+            sid = sid,
+            epid = item.id,
+            aid = item.aid,
+            id = item.cid,
+            title = item.long_title.ifBlank { item.title },
+            coverUrl = item.cover,
+            ownerId = "",
+            ownerName = title,
+        )
+        playerSource.episodes = episodes.map {
+            BangumiPlayerSource.EpisodeInfo(
+                epid = it.id, aid = it.aid, cid = it.cid,
+                cover = it.cover,
+                index = it.title,
+                index_title = it.long_title,
+                badge = it.badge,
+                badge_info = BangumiPlayerSource.EpisodeBadgeInfo(
+                    text = it.badge_info.text,
+                    bg_color = it.badge_info.bg_color,
+                    bg_color_night = it.badge_info.bg_color_night,
+                ),
+            )
+        }
+        basePlayerDelegate.openPlayer(playerSource)
     }
 
 }

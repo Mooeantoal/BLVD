@@ -279,7 +279,7 @@ internal fun CustomTime(
                     it.date = i
                 }
                 if (abs(_startTime.getGapCount(dateModel)) > 30) {
-                    // 超过30天范围提示，已通过UI交互反馈
+                    // TODO: toast
                 } else if (dateModel.getDate().time > _startTime.getDate().time) {
                     endTime = dateModel
                 } else {
@@ -383,7 +383,6 @@ internal fun CustomTime(
     }
 }
 
-// 注释掉的预览函数
 //@Preview
 //@Composable
 //fun CustomTimePreview() {

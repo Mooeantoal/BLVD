@@ -97,7 +97,7 @@ internal class DownloadDetailPageViewModel(
             var type = DownloadType.VIDEO
             val page = biliEntry.page_data
             if (page != null) {
-                id = biliEntry.avid ?: throw IllegalStateException("avid is null for video entry")
+                id = biliEntry.avid!!
                 indexTitle = page.download_title ?: "unknown"
                 cid = page.cid
                 type = DownloadType.VIDEO
@@ -106,7 +106,7 @@ internal class DownloadDetailPageViewModel(
             val ep = biliEntry.ep
             val source = biliEntry.source
             if (ep != null && source != null) {
-                id = (biliEntry.season_id ?: throw IllegalStateException("season_id is null for bangumi entry")).toLong()
+                id = biliEntry.season_id!!.toLong()
                 indexTitle = ep.index_title
                 epid = ep.episode_id
                 cid = source.cid
@@ -159,7 +159,13 @@ internal class DownloadDetailPageViewModel(
 
     fun itemClick(item: DownloadItemInfo) {
         if (item.is_completed) {
-            PopTip.show("此版本未提供播放")
+            basePlayerDelegate.openPlayer(LocalPlayerSource(
+                activity = fragment.requireActivity(),
+                entryDirPath = item.dir_path,
+                id = item.id.toString(),
+                title = item.title,
+                coverUrl = item.cover,
+            ))
         }
     }
 

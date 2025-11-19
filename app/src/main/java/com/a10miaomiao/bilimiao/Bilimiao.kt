@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.a10miaomiao.bilimiao.comm.BilimiaoCommApp
 import com.a10miaomiao.bilimiao.comm.delegate.theme.ThemeDelegate
 import com.kongzue.dialogx.DialogX
-// 已移除的依赖相关代码
-// import net.mikaelzero.mojito.Mojito
-// import net.mikaelzero.mojito.loader.glide.GlideImageLoader
-// import net.mikaelzero.mojito.view.sketch.SketchImageLoadFactory
+import net.mikaelzero.mojito.Mojito
+import net.mikaelzero.mojito.loader.glide.GlideImageLoader
+import net.mikaelzero.mojito.view.sketch.SketchImageLoadFactory
 
 
 class Bilimiao: Application() {
@@ -28,10 +27,10 @@ class Bilimiao: Application() {
         super.onCreate()
         AppCrashHandler.getInstance(this)
         setDefaultNightMode()
-        // Mojito.initialize(
-        //     GlideImageLoader.with(this),
-        //     SketchImageLoadFactory()
-        // )
+        Mojito.initialize(
+            GlideImageLoader.with(this),
+            SketchImageLoadFactory()
+        )
         commApp.onCreate()
     }
 

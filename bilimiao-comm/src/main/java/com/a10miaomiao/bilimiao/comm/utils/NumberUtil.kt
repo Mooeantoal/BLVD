@@ -33,15 +33,10 @@ object NumberUtil {
     }
 
     fun converString(num: String): String {
-        return try {
-            if (TypeSafe.isInteger(num)) {
-                converString(TypeSafe.safeToInt(num))
-            } else {
-                num
-            }
-        } catch (e: Exception) {
-            ExceptionHandler.handleException(e, "converString: $num")
-            num
+        try {
+            return converString(Integer.valueOf(num))
+        } catch (e: NumberFormatException) {
+            return num
         }
     }
 
@@ -73,13 +68,8 @@ object NumberUtil {
 
     fun converDuration(duration: String): String {
         return try {
-            if (TypeSafe.isInteger(duration)) {
-                converDuration(TypeSafe.safeToInt(duration))
-            } else {
-                duration
-            }
-        } catch (e: Exception) {
-            ExceptionHandler.handleException(e, "converDuration: $duration")
+            converDuration(Integer.valueOf(duration))
+        } catch (e: NumberFormatException) {
             duration
         }
     }
@@ -106,14 +96,14 @@ object NumberUtil {
                 val sf = SimpleDateFormat("yyyy-MM-dd HH:mm")
                 sf.format(date)
             }
-            deltime > 24 * 60 * 60 -> TypeSafe.safeToString(deltime / (24 * 60 * 60).toInt()) + "天前"
-            deltime > 60 * 60 -> TypeSafe.safeToString(deltime / (60 * 60).toInt()) + "小时前"
-            deltime > 60 -> TypeSafe.safeToString(deltime / 60.toInt()) + "分钟前"
-            else -> TypeSafe.safeToString(deltime) + "秒前"
+            deltime > 24 * 60 * 60 -> (deltime / (24 * 60 * 60)).toInt().toString() + "天前"
+            deltime > 60 * 60 -> (deltime / (60 * 60)).toInt().toString() + "小时前"
+            deltime > 60 -> (deltime / 60).toInt().toString() + "分钟前"
+            else -> deltime.toString() + "秒前"
         }
     }
 
     fun isNumber(text: String): Boolean {
-        return TypeSafe.isInteger(text)
+        return text.matches(Regex("^[0-9]+$"))
     }
 }

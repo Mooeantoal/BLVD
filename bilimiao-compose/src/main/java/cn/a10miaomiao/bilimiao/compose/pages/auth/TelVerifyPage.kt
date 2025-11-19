@@ -190,7 +190,7 @@ private class TelVerifyPageViewModel(
                 ).awaitCall().json<ResponseData<LoginInfo>>()
             withContext(Dispatchers.Main) {
                 if (res.isSuccess) {
-                    val loginInfo = res.data ?: throw IllegalStateException("Response data is null")
+                    val loginInfo = res.data!!
                     BilimiaoCommApp.commApp.saveAuthInfo(loginInfo)
                     authInfo()
                 } else {
@@ -243,15 +243,15 @@ private class TelVerifyPageViewModel(
                 recaptchaToken = recaptchaToken,
             ).awaitCall().json<ResponseData<SmsSendInfo>>(isLog = true)
         }
-            if (res.isSuccess) {
-                startCountdown(60)
-                captchaKey = res.requireData().captcha_key ?: throw IllegalStateException("captcha_key is null")
-                PopTip.show("已发送短信验证码")
-                return true
-            } else {
-                PopTip.show(res.message)
-                return false
-            }
+        if (res.isSuccess) {
+            startCountdown(60)
+            captchaKey = res.requireData().captcha_key!!
+            PopTip.show("已发送短信验证码")
+            return true
+        } else {
+            PopTip.show(res.message)
+            return false
+        }
     }
 
     /**
@@ -269,15 +269,15 @@ private class TelVerifyPageViewModel(
                 recaptchaToken = recaptchaToken,
             ).awaitCall().json<ResponseData<SmsSendInfo>>()
         }
-            if (res.isSuccess) {
-                startCountdown(60)
-                captchaKey = res.requireData().captcha_key ?: throw IllegalStateException("captcha_key is null")
-                PopTip.show("已发送邮箱验证码")
-                return true
-            } else {
-                PopTip.show(res.message)
-                return false
-            }
+        if (res.isSuccess) {
+            startCountdown(60)
+            captchaKey = res.requireData().captcha_key!!
+            PopTip.show("已发送邮箱验证码")
+            return true
+        } else {
+            PopTip.show(res.message)
+            return false
+        }
     }
 
     /**

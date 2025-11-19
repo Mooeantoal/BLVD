@@ -34,7 +34,7 @@ data class BiliDownloadEntryInfo(
 
     val key: Long
         get() {
-            return source?.cid ?: page_data?.cid ?: (avid ?: throw IllegalStateException("avid is null and no valid cid available"))
+            return source?.cid ?: page_data?.cid ?: avid!!
         }
 
     val name: String

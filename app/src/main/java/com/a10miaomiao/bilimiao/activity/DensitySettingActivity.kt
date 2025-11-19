@@ -12,8 +12,6 @@ import com.a10miaomiao.bilimiao.Bilimiao
 import com.a10miaomiao.bilimiao.R
 import com.a10miaomiao.bilimiao.comm.delegate.theme.ThemeDelegate
 import com.a10miaomiao.bilimiao.comm.utils.ScreenDpiUtil
-import com.a10miaomiao.bilimiao.comm.utils.TypeSafe
-import com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler
 import com.a10miaomiao.bilimiao.config.config
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -167,21 +165,12 @@ class DensitySettingActivity : AppCompatActivity() {
                 setOnClickListener {
                     try {
                         val dipStr = dipEditText.text.toString()
-                        val dpi = TypeSafe.safeToInt(dipStr, 0)
-                        if (dpi == 0 && dipStr.isNotEmpty()) {
-                            PopTip.show("请输入有效的整数值")
-                            return@setOnClickListener
-                        }
+                        val dpi = dipStr.toInt()
                         val fontScaleStr = fontScaleEditText.text.toString()
-                        val fontScale = TypeSafe.safeToFloat(fontScaleStr, 1.0f)
-                        if (fontScale == 0.0f && fontScaleStr.isNotEmpty()) {
-                            PopTip.show("请输入有效的数值")
-                            return@setOnClickListener
-                        }
+                        val fontScale = fontScaleStr.toFloat()
                         activity.setCustomConfiguration(dpi, fontScale)
-                    } catch (ex: Exception) {
-                        ExceptionHandler.handleException(ex, "Density setting")
-                        PopTip.show("设置失败，请输入有效数值")
+                    } catch (ex: NumberFormatException) {
+                        PopTip.show("请输入整数")
                     }
                 }
             }, lParams(matchParent, wrapContent) {

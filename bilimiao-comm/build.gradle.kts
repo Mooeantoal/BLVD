@@ -16,6 +16,7 @@ android {
 
     defaultConfig {
         minSdk = 21
+        targetSdk = 34
         version = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -62,7 +63,7 @@ protobuf {
         val generatorClass = "cn.a10miaomiao.generator.GrpcServiceGenerator"
         // grpc-generator/build/libs/grpc-generator.jar
         val generatorJarFile = Paths.get(
-            project(":grpc-generator").layout.buildDirectory.get().asFile.path,
+            project(":grpc-generator").buildDir.path,
             "libs",
             "$generatorModule.jar"
         ).toFile()

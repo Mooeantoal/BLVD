@@ -43,11 +43,11 @@ public class NativeBitmapFactory {
                 nativeLibLoaded = false;
             }
         } catch (Exception e) {
-            android.util.Log.e("NativeBitmapFactory", "Exception loading native library", e);
+            e.printStackTrace();
             notLoadAgain = true;
             nativeLibLoaded = false;
         } catch (Error e) {
-            android.util.Log.e("NativeBitmapFactory", "Error loading native library", e);
+            e.printStackTrace();
             notLoadAgain = true;
             nativeLibLoaded = false;
         }
@@ -69,7 +69,7 @@ public class NativeBitmapFactory {
             }
         }
 
-        // Log.e("NativeBitmapFactory", "loaded" + nativeLibLoaded);
+        Log.e("NativeBitmapFactory", "loaded" + nativeLibLoaded);
     }
 
     public static synchronized void releaseLibs() {
@@ -79,7 +79,7 @@ public class NativeBitmapFactory {
         if (loaded) {
             release();
         }
-        // Release log: // Log.e("NativeBitmapFactory", "released");
+        // Log.e("NativeBitmapFactory", "released");
     }
 
     static void initField() {
@@ -88,7 +88,7 @@ public class NativeBitmapFactory {
             nativeIntField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             nativeIntField = null;
-            android.util.Log.w("NativeBitmapFactory", "No such field found", e);
+            e.printStackTrace();
         }
     }
 
@@ -119,7 +119,7 @@ public class NativeBitmapFactory {
             }
             return result;
         } catch (Exception e) {
-            // Log.e("NativeBitmapFactory", "exception:" + e.toString());
+            Log.e("NativeBitmapFactory", "exception:" + e.toString());
             return false;
         } catch (Error e) {
             return false;
@@ -138,9 +138,9 @@ public class NativeBitmapFactory {
             }
             return nativeIntField.getInt(config);
         } catch (IllegalArgumentException e) {
-            android.util.Log.w("NativeBitmapFactory", "Illegal argument for native field", e);
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
-            android.util.Log.w("NativeBitmapFactory", "Illegal access to native field", e);
+            e.printStackTrace();
         }
         return 0;
     }
@@ -155,7 +155,7 @@ public class NativeBitmapFactory {
 
     public static synchronized Bitmap createBitmap(int width, int height, Bitmap.Config config, boolean hasAlpha) {
         if (!nativeLibLoaded || nativeIntField == null) {
-            // Create bitmap log: // Log.e("NativeBitmapFactory", "ndk bitmap create failed");
+            // Log.e("NativeBitmapFactory", "ndk bitmap create failed");
             return Bitmap.createBitmap(width, height, config);
         }
         return createNativeBitmap(width, height, config, hasAlpha);
@@ -163,8 +163,8 @@ public class NativeBitmapFactory {
 
     private static Bitmap createNativeBitmap(int width, int height, Config config, boolean hasAlpha) {
         int nativeConfig = getNativeConfig(config);
-        // Native config log: // Log.e("NativeBitmapFactory", "nativeConfig:" + nativeConfig);
-        // Create bitmap log: // Log.e("NativeBitmapFactory", "create bitmap:" + bitmap);
+        // Log.e("NativeBitmapFactory", "nativeConfig:" + nativeConfig);
+        // Log.e("NativeBitmapFactory", "create bitmap:" + bitmap);
         return android.os.Build.VERSION.SDK_INT == 19 ? createBitmap19(width, height,
                 nativeConfig, hasAlpha) : createBitmap(width, height, nativeConfig, hasAlpha);
     }

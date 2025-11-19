@@ -245,25 +245,25 @@ private class SMSLoginPageViewModel(
                 ).awaitCall().json<ResponseData<SmsSendInfo>>()
             }
         }
-            if (res.isSuccess) {
-                val resData = res.data ?: throw IllegalStateException("Response data is null")
-                if (!resData.recaptcha_url.isNullOrBlank()) {
-                    recaptchaUrl = resData.recaptcha_url ?: throw IllegalStateException("recaptcha_url is null")
-                    biliGeetestUtil.startCustomFlow(this)
-                    return false
-                }
-                captchaKey = res.requireData().captcha_key ?: throw IllegalStateException("captcha_key is null")
-                startCountdown(60)
-                PopTip.show("已发送短信验证码")
-                return true
-            } else if (res.code == -105 && gt3Result == null) {
-                recaptchaUrl = res.requireData().recaptcha_url ?: throw IllegalStateException("recaptcha_url is null")
+        if (res.isSuccess) {
+            val resData = res.data!!
+            if (!resData.recaptcha_url.isNullOrBlank()) {
+                recaptchaUrl = resData.recaptcha_url!!
                 biliGeetestUtil.startCustomFlow(this)
                 return false
-            } else {
-                PopTip.show(res.message)
-                return false
             }
+            captchaKey = res.requireData().captcha_key!!
+            startCountdown(60)
+            PopTip.show("已发送短信验证码")
+            return true
+        } else if (res.code == -105 && gt3Result == null) {
+            recaptchaUrl = res.requireData().recaptcha_url!!
+            biliGeetestUtil.startCustomFlow(this)
+            return false
+        } else {
+            PopTip.show(res.message)
+            return false
+        }
     }
 
     /**

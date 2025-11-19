@@ -585,7 +585,7 @@ public class DanmakuContext implements Cloneable {
         return this;
     }
 
-    @Deprecated(since = "1.0", forRemoval = true)
+    @Deprecated
     public DanmakuContext setOverlapping(Map<Integer, Boolean> pairs) {
         return preventOverlapping(pairs);
     }

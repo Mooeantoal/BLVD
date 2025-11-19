@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import com.a10miaomiao.bilimiao.comm.datastore.SettingConstants
+import com.a10miaomiao.bilimiao.comm.delegate.player.PlayerDelegate2
 import com.a10miaomiao.bilimiao.config.config
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.AppBarBehavior
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.ContentBehavior
@@ -30,6 +31,7 @@ class ScaffoldView @JvmOverloads constructor(
 
     var onPlayerChanged: ((show: Boolean) -> Unit)? = null
     var onDrawerStateChanged: ((state: Int) -> Unit)? = null
+    var playerDelegate: PlayerDelegate2? = null
 
     /**
      * 横盘时小窗大小
@@ -41,7 +43,9 @@ class ScaffoldView @JvmOverloads constructor(
      * 播放器比例
      */
     val playerVideoRatio: Float
-        get() = (16f / 9f)
+        get() {
+            return playerDelegate?.getVideoRatio() ?: (16f / 9f)
+        }
 
     /**
      * 播放器视图尺寸状态
@@ -50,6 +54,7 @@ class ScaffoldView @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
+                playerDelegate?.setHoldStatus(isHoldUpPlayer)
                 updateLayout(subContentShown)
             }
         }

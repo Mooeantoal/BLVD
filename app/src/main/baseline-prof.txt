@@ -24383,7 +24383,7 @@ PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getAppBarMenuWidth()I
 PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getAppBarTitleHeight()I
 PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getBlockBackgroundColor()I
 PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getBottomSheetTitleHeight()I
-PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getColor$app_fossBenchmark(I)I
+PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getColor$app_fullBenchmark(I)I
 PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getForegroundAlpha45Color()I
 PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getSelectableItemBackgroundBorderless()I
 PLcom/a10miaomiao/bilimiao/config/ViewConfig;->getShadowColor()I

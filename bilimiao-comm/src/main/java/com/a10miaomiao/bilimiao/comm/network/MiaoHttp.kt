@@ -3,7 +3,6 @@ package com.a10miaomiao.bilimiao.comm.network
 import android.webkit.CookieManager
 import com.a10miaomiao.bilimiao.comm.BilimiaoCommApp
 import com.a10miaomiao.bilimiao.comm.miao.MiaoJson
-import com.a10miaomiao.bilimiao.comm.utils.ExceptionHandler
 import com.a10miaomiao.bilimiao.comm.utils.miaoLogger
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.DeserializationStrategy
@@ -19,9 +18,8 @@ import kotlin.coroutines.resumeWithException
 
 class MiaoHttp(var url: String? = null) {
     private val cookieManager by lazy {
-        ExceptionHandler.safeExecute("cookie manager initialization", null) {
-            CookieManager.getInstance()
-        }
+       try { CookieManager.getInstance() }
+       catch (e: Exception) { null }
     }
 
     private var client = OkHttpClient()
@@ -48,40 +46,28 @@ class MiaoHttp(var url: String? = null) {
             requestBuilder.addHeader("Cookie", cookie)
         }
         for (key in headers.keys) {
-            val headerValue = headers[key] ?: throw ExceptionHandler.AppException.BusinessException(
-                code = -1,
-                message = "Header value for '$key' is null"
-            )
-            requestBuilder.addHeader(key, headerValue)
+            requestBuilder.addHeader(key, headers[key]!!)
         }
 
         if (body == null && formBody != null) {
-            val bodyStr = ApiHelper.urlencode(formBody ?: emptyMap())
+            val bodyStr = ApiHelper.urlencode(formBody!!)
             body = bodyStr.toRequestBody(
                 "application/x-www-form-urlencoded".toMediaType()
             )
         }
-        val reqUrl = url ?: throw ExceptionHandler.AppException.BusinessException(
-            code = -1,
-            message = "URL cannot be null for HTTP request"
-        )
         val req = requestBuilder.method(method, body)
-            .url(reqUrl)
+            .url(url!!)
             .build()
         return req
     }
 
     fun call(): Response {
         val req = buildRequest()
-        return ExceptionHandler.safeResult("HTTP call to ${url}") {
-            client.newCall(req).execute()
-        }.getOrThrow()
+        return client.newCall(req).execute()
     }
 
     private fun getCookie(url: String?): String {
-        return ExceptionHandler.safeExecute("get cookie for $url", "") {
-            cookieManager?.getCookie(url) ?: ""
-        }
+        return cookieManager?.getCookie(url) ?: ""
     }
 
     suspend fun awaitCall(): Response{
@@ -90,24 +76,21 @@ class MiaoHttp(var url: String? = null) {
             "url" to url,
             "formBody" to formBody
         )
-        
-        return ExceptionHandler.safeNetworkCall(url ?: "unknown", "HTTP await call") {
-            suspendCancellableCoroutine { continuation ->
-                val req = buildRequest()
-                val call = client.newCall(req)
-                continuation.invokeOnCancellation {
-                    call.cancel()
-                }
-                call.enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        continuation.resumeWithException(e)
-                    }
-                    override fun onResponse(call: Call, response: Response) {
-                        continuation.resume(response)
-                    }
-                })
+        return suspendCancellableCoroutine { continuation ->
+            val req = buildRequest()
+            val call = client.newCall(req)
+            continuation.invokeOnCancellation {
+                call.cancel()
             }
-        }.getOrThrow()
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    continuation.resumeWithException(e)
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    continuation.resume(response)
+                }
+            })
+        }
     }
 
     fun get(): Response {
@@ -131,25 +114,15 @@ class MiaoHttp(var url: String? = null) {
         }
 
         fun Response.string(): String {
-            return this.body?.string() ?: throw ExceptionHandler.AppException.ParseException(
-                dataType = "HTTP response body",
-                rawData = null,
-                cause = null
-            )
+            return this.body!!.string()
         }
 
         inline fun <reified T> Response.json(isLog: Boolean = false): T {
-            val jsonStr = ExceptionHandler.safeResult("parse HTTP response body") {
-                this.string()
-            }.getOrThrow()
-            
+            val jsonStr = this.string()
             if (isLog) {
                 miaoLogger() debug jsonStr
             }
-            
-            return ExceptionHandler.safeResult("parse JSON to ${T::class.simpleName}") {
-                MiaoJson.fromJson<T>(jsonStr)
-            }.getOrThrow()
+            return MiaoJson.fromJson(jsonStr)
         }
 
         const val GET = "GET"

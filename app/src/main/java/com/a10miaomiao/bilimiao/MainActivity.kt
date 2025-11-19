@@ -33,19 +33,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import cn.a10miaomiao.bilimiao.compose.BilimiaoPageRoute
 import cn.a10miaomiao.bilimiao.compose.ComposeFragment
 import cn.a10miaomiao.bilimiao.compose.StartViewWrapper
 import cn.a10miaomiao.bilimiao.compose.base.ComposePage
 import cn.a10miaomiao.bilimiao.compose.base.PageSearchMethod
 import cn.a10miaomiao.bilimiao.compose.pages.search.SearchResultPage
-import com.a10miaomiao.bilimiao.comm.utils.BiliGeetestUtil
-// import com.a10miaomiao.bilimiao.comm.BiliGeetestUtilImpl // 已移除
+import com.a10miaomiao.bilimiao.comm.BiliGeetestUtilImpl
 import com.a10miaomiao.bilimiao.comm.BilimiaoStatService
 import com.a10miaomiao.bilimiao.comm.datastore.SettingConstants
 import com.a10miaomiao.bilimiao.comm.datastore.SettingPreferences
 import com.a10miaomiao.bilimiao.comm.delegate.helper.StatusBarHelper
 import com.a10miaomiao.bilimiao.comm.delegate.helper.SupportHelper
+import com.a10miaomiao.bilimiao.comm.delegate.player.BasePlayerDelegate
+import com.a10miaomiao.bilimiao.comm.delegate.player.PlayerDelegate2
 import com.a10miaomiao.bilimiao.comm.delegate.theme.ThemeDelegate
 import com.a10miaomiao.bilimiao.comm.mypage.MenuActions
 import com.a10miaomiao.bilimiao.comm.mypage.MyPage
@@ -54,18 +57,19 @@ import com.a10miaomiao.bilimiao.comm.mypage.MyPopupMenu
 import com.a10miaomiao.bilimiao.comm.navigation.openBottomSheet
 import com.a10miaomiao.bilimiao.comm.network.BiliGRPCConfig
 import com.a10miaomiao.bilimiao.comm.scanner.BilimiaoScanner
+import com.a10miaomiao.bilimiao.comm.utils.BiliGeetestUtil
 import com.a10miaomiao.bilimiao.comm.utils.ScreenDpiUtil
 import com.a10miaomiao.bilimiao.comm.utils.miaoLogger
 import com.a10miaomiao.bilimiao.config.config
-// import com.a10miaomiao.bilimiao.page.MainBackPopupMenu // 文件不存在
-// import com.a10miaomiao.bilimiao.service.PlaybackService // 文件不存在
+import com.a10miaomiao.bilimiao.page.MainBackPopupMenu
+import com.a10miaomiao.bilimiao.service.PlaybackService
 import com.a10miaomiao.bilimiao.store.Store
 import com.a10miaomiao.bilimiao.widget.scaffold.ScaffoldView
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.DrawerBehaviorDelegate
 import com.a10miaomiao.bilimiao.widget.scaffold.behavior.PlayerBehavior
 import com.a10miaomiao.bilimiao.widget.scaffold.getScaffoldView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-// import com.google.common.util.concurrent.MoreExecutors // 依赖已移除
+import com.google.common.util.concurrent.MoreExecutors
 import com.kongzue.dialogx.dialogs.PopTip
 import com.materialkolor.dynamiccolor.MaterialDynamicColors
 import com.materialkolor.hct.Hct
@@ -93,6 +97,7 @@ class MainActivity
         bindSingleton { this@MainActivity }
         store.loadStoreModules(this)
         bindSingleton { startViewWrapper }
+        bindSingleton { basePlayerDelegate }
         bindSingleton { themeDelegate }
         bindSingleton { statusBarHelper }
         bindSingleton { supportHelper }
@@ -110,10 +115,10 @@ class MainActivity
         )
     }
     private val themeDelegate by lazy { ThemeDelegate(this, di) }
-    
+    private val basePlayerDelegate: BasePlayerDelegate by lazy { PlayerDelegate2(this, di) }
     private val statusBarHelper by lazy { StatusBarHelper(this) }
     private val supportHelper by lazy { SupportHelper(this) }
-    private val biliGeetestUtil: BiliGeetestUtil by lazy { createBiliGeetestUtil() }
+    private val biliGeetestUtil: BiliGeetestUtil by lazy { BiliGeetestUtilImpl(this, lifecycle) }
 
     private lateinit var navHostFragment: ComposeFragment
 
@@ -209,6 +214,9 @@ class MainActivity
     private fun initRootView(savedInstanceState: Bundle?) {
         mainUi = MainUi(this, startViewWrapper)
         setContentView(ui.root)
+        basePlayerDelegate.onCreate(savedInstanceState)
+        ui.root.showPlayer = basePlayerDelegate.isPlaying()
+        ui.root.playerDelegate = basePlayerDelegate as PlayerDelegate2
         ui.root.onDrawerStateChanged = ::onDrawerStateChanged
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ui.root.rootWindowInsets?.let {
@@ -217,6 +225,11 @@ class MainActivity
             ui.root.setOnApplyWindowInsetsListener { v, insets ->
                 setWindowInsets(insets)
                 insets
+            }
+            ui.root.onPlayerChanged = {
+                statusBarHelper.isLightStatusBar =
+                    !it || (ui.root.orientation == ScaffoldView.HORIZONTAL && !ui.root.fullScreenPlayer)
+                setWindowInsets(ui.root.rootWindowInsets)
             }
         } else {
             setWindowInsetsAndroidL()
@@ -241,8 +254,6 @@ class MainActivity
 
         intent.data?.let {
             navHostFragment.navigateByUri(it)
-        } ?: run {
-            navHostFragment.navigateByUri(Uri.parse("bilimiao://download"))
         }
     }
 
@@ -390,7 +401,16 @@ class MainActivity
     }
 
     private val onBackLongClick = View.OnLongClickListener {
-        goBackHome()
+        if (ui.root.showPlayer) {
+            MainBackPopupMenu(
+                this@MainActivity,
+                it,
+                basePlayerDelegate
+            ).show()
+            true
+        } else {
+            goBackHome()
+        }
     }
     private val onPointerClick = View.OnClickListener {
         ui.root.pointerExchanged = !ui.root.pointerExchanged
@@ -531,14 +551,35 @@ class MainActivity
         windowStore.setBottomSheetContentInsets(
             0, config.bottomSheetTitleHeight, 0, 0
         )
+        val playerLP = ui.mPlayerLayout.layoutParams
+        if (playerLP is ScaffoldView.LayoutParams) {
+            val behavior = playerLP.behavior
+            if (behavior is PlayerBehavior) {
+                behavior.setWindowInsets(left, top, right, bottom)
+            }
+        }
         ui.mAppBar.setWindowInsets(left, top, right, bottom)
+        val showPlayer = ui.root.showPlayer
+        val fullScreenPlayer = ui.root.fullScreenPlayer
         if (ui.root.orientation == ScaffoldView.VERTICAL) {
-            windowStore.setContentInsets(
-                left, top, right, bottom + config.appBarTitleHeight,
-            )
+            if (showPlayer) {
+                windowStore.setContentInsets(
+                    left,
+                    0,
+                    right,
+                    top + bottom + config.appBarTitleHeight + ui.root.smallModePlayerMinHeight,
+                )
+            } else {
+                windowStore.setContentInsets(
+                    left, top, right, bottom + config.appBarTitleHeight,
+                )
+            }
             windowStore.setBottomAppBarHeight(config.appBarMenuHeight)
             ui.mContainerView.setPadding(0, 0, 0, 0)
             ui.mSubContainerView.setPadding(0, 0, 0, 0)
+            ui.mPlayerLayout.setPadding(
+                0, if (fullScreenPlayer) 0 else top, 0, 0
+            )
         } else {
             windowStore.setContentInsets(
                 0, top, right, bottom,
@@ -546,38 +587,79 @@ class MainActivity
             windowStore.setBottomAppBarHeight(0)
             ui.mContainerView.setPadding(left, 0, 0, 0)
             ui.mSubContainerView.setPadding(0, 0, 0, 0)
+            ui.mPlayerLayout.setPadding(
+                0, 0, 0, 0
+            )
         }
+        basePlayerDelegate.setWindowInsets(left, top, right, bottom, displayCutout)
         ui.root.statusBarHeight = top
         ui.root.updateLayout(false)
     }
 
     override fun onResume() {
         super.onResume()
+        basePlayerDelegate.onResume()
+
         // 百度移动统计埋点
         BilimiaoStatService.onResume(this)
     }
 
     override fun onPause() {
         super.onPause()
+        basePlayerDelegate.onPause()
+
         // 百度移动统计埋点
         BilimiaoStatService.onPause(this)
     }
 
     override fun onDestroy() {
+        basePlayerDelegate.onDestroy()
         store.onDestroy()
         super.onDestroy()
     }
 
     override fun onStart() {
         super.onStart()
+        basePlayerDelegate.onStart()
     }
 
     override fun onStop() {
         super.onStop()
+        basePlayerDelegate.onStop()
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         miaoLogger() debug "onKeyUp: $keyCode"
+        when (keyCode) {
+            KeyEvent.KEYCODE_SPACE -> {
+                val videoPlayer = mainUi?.mVideoPlayerView
+                if (videoPlayer != null && mainUi?.root?.showPlayer == true) {
+                    if (videoPlayer.isInPlayingState) {
+                        videoPlayer.onVideoPause()
+                    } else {
+                        videoPlayer.onVideoResume()
+                    }
+                    return true
+                }
+            }
+            KeyEvent.KEYCODE_DPAD_LEFT -> {
+                val videoPlayer = mainUi?.mVideoPlayerView
+                if (videoPlayer != null && mainUi?.root?.showPlayer == true) {
+                    videoPlayer.seekTo(videoPlayer.currentPosition - 5000)
+                }
+            }
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                val videoPlayer = mainUi?.mVideoPlayerView
+                if (videoPlayer != null && mainUi?.root?.showPlayer == true) {
+                    videoPlayer.seekTo(videoPlayer.currentPosition + 5000)
+                }
+            }
+            KeyEvent.KEYCODE_ESCAPE -> {
+                if (mainUi?.root?.showPlayer == true) {
+                    basePlayerDelegate.onBackPressed()
+                }
+            }
+        }
         return super.onKeyUp(keyCode, event)
     }
 
@@ -653,12 +735,26 @@ class MainActivity
     }
 
 
-    
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onPictureInPictureModeChanged(
+        isInPictureInPictureMode: Boolean,
+        newConfig: Configuration
+    ) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        basePlayerDelegate.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        if (isInPictureInPictureMode) { // 进入画中画模式，则隐藏其它控件
+
+        } else {
+
+        }
+    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        basePlayerDelegate.onConfigurationChanged(newConfig)
         ui.root.orientation = newConfig.orientation
-        statusBarHelper.isLightStatusBar = true
+        statusBarHelper.isLightStatusBar =
+            !ui.root.showPlayer || (ui.root.orientation == ScaffoldView.HORIZONTAL && !ui.root.fullScreenPlayer)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             setWindowInsetsAndroidL()
         }
@@ -682,7 +778,9 @@ class MainActivity
             ui.root.closeDrawer()
             return
         }
-        
+        if (ui.root.fullScreenPlayer && basePlayerDelegate.onBackPressed()) {
+            return
+        }
         if (onHostNavBack()) {
             return
         }
@@ -694,21 +792,6 @@ class MainActivity
         ScreenDpiUtil.readCustomConfiguration(configuration)
         val newContext = newBase.createConfigurationContext(configuration)
         super.attachBaseContext(newContext)
-    }
-
-    private fun createBiliGeetestUtil(): BiliGeetestUtil {
-        return try {
-            // 尝试创建 full 版本的实现
-            val clazz = Class.forName("com.a10miaomiao.bilimiao.comm.BiliGeetestUtilImpl")
-            clazz.getDeclaredConstructor().newInstance() as BiliGeetestUtil
-        } catch (e: Exception) {
-            // 如果失败，创建一个空实现的实例
-            object : BiliGeetestUtil {
-                override fun startCustomFlow(gtCallBack: BiliGeetestUtil.GTCallBack) {
-                    // Geetest 功能已被移除
-                }
-            }
-        }
     }
 
 }

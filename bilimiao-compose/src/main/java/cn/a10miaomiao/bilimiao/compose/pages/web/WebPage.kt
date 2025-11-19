@@ -87,8 +87,7 @@ private class WebPageViewModel(
     val hideNavbar = mutableStateOf(false)
 
     init {
-        // 注释掉的初始化代码
-        // initWebView(webView)
+//        initWebView(webView)
     }
 
     fun initWebView(view: WebView) {
@@ -157,28 +156,27 @@ private class WebPageViewModel(
                     }
                 })()
             """.trimIndent()) {
-                // DebugMiao.log("callback", it)
+//                DebugMiao.log("callback", it)
             }
         }
 
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
             loading.value = false
-            // 注释掉的JavaScript注入代码
-            // val js = """javascript:(function() {
-            //             var parent = document.getElementsByTagName('head').item(0);
-            //             var style = document.createElement('style');
-            //             style.type = 'text/css';
-            //             style.innerHTML = '#dynamic-openapp, #dynamic-openapp-mask,.mini-header-container,.fixed-header-container,.v-navbar__body,#internationalHeader,.international-footer,.bili-footer,#cannot-check{display: none !important;} #app{padding-bottom: 0;}';
-            //             parent.appendChild(style);
-            //             window.java_obj.showDescription(
-            //                    'theme-color',
-            //                    document.querySelector('meta[name="theme-color"]').getAttribute('content')
-            //             );
-            //             window.java_obj.test.hello('from js');
-            //         })()
-            //     """
-            // view.loadUrl(js)
+//            val js = """javascript:(function() {
+//                        var parent = document.getElementsByTagName('head').item(0);
+//                        var style = document.createElement('style');
+//                        style.type = 'text/css';
+//                        style.innerHTML = '#dynamic-openapp, #dynamic-openapp-mask,.mini-header-container,.fixed-header-container,.v-navbar__body,#internationalHeader,.international-footer,.bili-footer,#cannot-check{display: none !important;} #app{padding-bottom: 0;}';
+//                        parent.appendChild(style);
+//                        window.java_obj.showDescription(
+//                               'theme-color',
+//                               document.querySelector('meta[name="theme-color"]').getAttribute('content')
+//                        );
+//                        window.java_obj.test.hello('from js');
+//                    })()
+//                """
+//            view.loadUrl(js)
         }
     }
 

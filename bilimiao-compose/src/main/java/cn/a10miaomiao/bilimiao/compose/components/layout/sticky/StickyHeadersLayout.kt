@@ -88,7 +88,7 @@ fun <T : Any> StickyHeadersLayout(
         modifier = modifier.clipToBounds(),
     ) {
         keys.forEach { interval ->
-            key(interval.key) { // 使用key实现内容复用，已优化性能
+            key(interval.key) { // TODO ReusableContentHost { }, see LazyLayoutItemContentFactory
                 Box(
                     modifier = Modifier
                         .run {
@@ -151,7 +151,6 @@ fun <T : Any> StickyHeadersLayout(
     }
 }
 
-/* 已实现的功能：
-    - 支持Box滚动和边界效果
-    - 完整的粘性头部布局
+/* TODO
+    - scroll on the box? overscroll effect?
  */

@@ -109,7 +109,7 @@ open class ZoomableViewState(
         }
         get() {
             return if (contentSizeState.value?.isSpecified == true) {
-                contentSizeState.value ?: Size.Zero
+                contentSizeState.value!!
             } else {
                 Size.Zero
             }
@@ -196,28 +196,28 @@ open class ZoomableViewState(
     // 触摸时中心位置
     var centroid = Offset.Zero
 
-    // 注释掉的挂载状态管理代码
-    // val mountedFlow = MutableStateFlow(false)
-    //
-    // // 等待挂载
-    // suspend fun awaitMounted() {
-    //     mountedFlow.apply {
-    //         withContext(Dispatchers.Default) {
-    //             takeWhile { !it }.collect()
-    //         }
-    //     }
-    // }
-    //
-    // // 标记挂载
-    // suspend fun onMounted() {
-    //     mountedFlow.emit(true)
-    // }
+//    // 挂载状态
+//    val mountedFlow = MutableStateFlow(false)
+//
+//    // 等待挂载
+//    suspend fun awaitMounted() {
+//        mountedFlow.apply {
+//            withContext(Dispatchers.Default) {
+//                takeWhile { !it }.collect()
+//            }
+//        }
+//    }
+//
+//    // 标记挂载
+//    suspend fun onMounted() {
+//        mountedFlow.emit(true)
+//    }
 
-    // 注释掉的saver相关代码
-    // internal var fromSaver = false
+    // 标识是否来自saver，旋转屏幕后会变成true
+//    internal var fromSaver = false
 
-    // 注释掉的时间戳代码
-    // private var resetTimeStamp by mutableStateOf(0L)
+    // 恢复的时间戳
+//    private var resetTimeStamp by mutableStateOf(0L)
 
     /**
      * 判断是否有动画正在运行

@@ -49,6 +49,7 @@ import cn.a10miaomiao.bilimiao.compose.common.navigation.PageNavigation
 import cn.a10miaomiao.bilimiao.compose.components.list.ListStateBox
 import cn.a10miaomiao.bilimiao.compose.components.list.SwipeToRefresh
 import cn.a10miaomiao.bilimiao.compose.components.video.VideoItemBox
+import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.components.TitleBar
 import com.a10miaomiao.bilimiao.comm.delegate.player.BasePlayerDelegate
 import com.a10miaomiao.bilimiao.comm.delegate.player.VideoPlayerSource
@@ -172,7 +173,21 @@ private class UserSeasonDetailViewModel(
 
     fun openVideo(item: bilibili.app.view.v1.Episode) {
         if (isAutoPlay.value) {
-            PopTip.show("此版本未提供播放")
+            addPlayList()
+            val id = item.cid.toString()
+            if (playerStore.state.cid != id) {
+                playerDelegate.openPlayer(
+                    VideoPlayerSource(
+                        mainTitle = item.title,
+                        title = item.title,
+                        coverUrl = item.cover,
+                        aid = item.aid.toString(),
+                        id = id,
+                        ownerId = item.author?.mid.toString(),
+                        ownerName = item.author?.name.toString(),
+                    )
+                )
+            }
         } else {
             pageNavigation.navigateToVideoInfo(item.aid.toString())
         }
@@ -197,7 +212,7 @@ private class UserSeasonDetailViewModel(
     }
 
     fun toPlayListPage() {
-        PopTip.show("此版本未提供播放列表")
+        pageNavigation.navigate(PlayListPage())
     }
 
     fun favSeason() = viewModelScope.launch(Dispatchers.IO) {
@@ -243,7 +258,8 @@ private class UserSeasonDetailViewModel(
     fun menuItemClick(view: View, item: MenuItemPropInfo) {
         when (item.key) {
             MenuKeys.playList -> {
-                PopTip.show("此版本未提供播放列表")
+                addPlayList()
+                toPlayListPage()
             }
             MenuKeys.follow -> {
                 favSeason()

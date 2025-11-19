@@ -46,6 +46,7 @@ import cn.a10miaomiao.bilimiao.compose.common.navigation.PageNavigation
 import cn.a10miaomiao.bilimiao.compose.components.list.ListStateBox
 import cn.a10miaomiao.bilimiao.compose.components.list.SwipeToRefresh
 import cn.a10miaomiao.bilimiao.compose.components.video.VideoItemBox
+import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import cn.a10miaomiao.bilimiao.compose.pages.user.components.TitleBar
 import com.a10miaomiao.bilimiao.comm.delegate.player.BasePlayerDelegate
 import com.a10miaomiao.bilimiao.comm.delegate.player.VideoPlayerSource
@@ -166,7 +167,20 @@ private class UserMedialistDetailViewMode(
 
     fun openVideo(item: MediaListV2Info) {
         if (isAutoPlay) {
-            PopTip.show("此版本未提供播放")
+            addPlayList()
+            if (playerStore.state.cid != item.id) {
+                playerDelegate.openPlayer(
+                    VideoPlayerSource(
+                        mainTitle = item.title,
+                        title = item.title,
+                        coverUrl = item.cover,
+                        aid = item.id,
+                        id = item.pages[0].id,
+                        ownerId = item.upper.mid,
+                        ownerName = item.upper.name,
+                    )
+                )
+            }
         } else {
             pageNavigation.navigateToVideoInfo(item.id)
         }
@@ -190,7 +204,7 @@ private class UserMedialistDetailViewMode(
     }
 
     fun toPlayListPage() {
-        PopTip.show("此版本未提供播放列表")
+        pageNavigation.navigate(PlayListPage())
     }
 
     fun changeAutoPlay(value: Boolean) {
@@ -200,7 +214,8 @@ private class UserMedialistDetailViewMode(
     fun menuItemClick(view: View, item: MenuItemPropInfo) {
         when (item.key) {
             MenuKeys.playList -> {
-                PopTip.show("此版本未提供播放列表")
+                addPlayList()
+                toPlayListPage()
             }
         }
     }

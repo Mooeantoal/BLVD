@@ -48,7 +48,7 @@ object BiliPalyUrlHelper {
         }
         val res = BiliApiService.playerAPI
             .getVideoPalyUrl(
-                (entry.avid ?: throw IllegalStateException("avid is null for video play url")).toString(),
+                entry.avid!!.toString(),
                 pageData.cid.toString(),
                 entry.prefered_video_quality,
                 if (entry.media_type == 1) {
@@ -105,7 +105,7 @@ object BiliPalyUrlHelper {
                 user_agent = DEFAULT_USER_AGENT
             )
         } else {
-            val durl = res.durl ?: throw IllegalStateException("durl is null in video play url response")
+            val durl = res.durl!!
             val segmentList = durl.map { item ->
                 BiliDownloadMediaFileInfo.Type1Segment(
                     backup_urls = listOf(),
@@ -222,7 +222,7 @@ object BiliPalyUrlHelper {
                 user_agent = DEFAULT_USER_AGENT
             )
         } else {
-            val durl = res.durl ?: throw IllegalStateException("durl is null in video play url response")
+            val durl = res.durl!!
             val segmentList = durl.map { item ->
                 BiliDownloadMediaFileInfo.Type1Segment(
                     backup_urls = listOf(),
@@ -278,7 +278,7 @@ object BiliPalyUrlHelper {
         val quality = entry.prefered_video_quality
         val result = BiliGRPCHttp.request {
             val req = bilibili.app.playurl.v1.PlayViewReq(
-                aid = entry.avid ?: throw IllegalStateException("avid is null for grpc video play url"),
+                aid = entry.avid!!,
                 cid = pageData.cid,
                 qn = quality.toLong(),
                 download = 0,

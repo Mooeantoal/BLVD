@@ -11,16 +11,16 @@ plugins {
 
 android {
     namespace = "com.a10miaomiao.bilimiao"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.a10miaomiao.bilimiao"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 116
         versionName = "2.4.8"
 
-        flavorDimensions += "default"
+        flavorDimensions("default")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -76,10 +76,6 @@ android {
             val channelName = project.properties["channel"] ?: "Unknown"
             manifestPlaceholders["channel"] = channelName
         }
-        create("foss") {
-            dimension = flavorDimensionList[0]
-            manifestPlaceholders["channel"] = "FOSS"
-        }
     }
 
     compileOptions {
@@ -93,9 +89,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
 
     lint {
         checkReleaseBuilds = false
@@ -140,8 +133,16 @@ dependencies {
 //    implementation("com.github.lihangleo2:ShadowLayout:3.2.4")
 
     implementationSplitties()
+    implementationMojito()
 
-    // 播放器相关（已移除）
+    // 播放器相关
+    implementation(Libraries.media3)
+    implementation(Libraries.media3Session)
+    implementation(Libraries.media3Decoder)
+    implementation(Libraries.media3Ui)
+    implementation(Libraries.media3ExoPlayer)
+    implementation(Libraries.media3ExoPlayerDash)
+    implementation(Libraries.gsyVideoPlayer)
 
     implementation(Libraries.okhttp3)
     implementation(Libraries.pbandkRuntime)
@@ -151,9 +152,17 @@ dependencies {
 
     implementation(project(":bilimiao-comm"))
     implementation(project(":bilimiao-download"))
+    implementation(project(":bilimiao-cover"))
+//    implementation project(":bilimiao-appwidget")
     implementation(project(":bilimiao-compose"))
+    // 弹幕引擎
+    implementation(project(":DanmakuFlameMaster"))
 
-    // 闭源库（已移除）
+    // 闭源库：百度统计、极验验证
+    implementation(Libraries.baiduMobstat)
+    implementation(Libraries.sensebot)
+    // av1解码器：https://github.com/androidx/media/tree/release/libraries/decoder_av1
+    implementation(files("libs/lib-decoder-av1-release.aar"))
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)

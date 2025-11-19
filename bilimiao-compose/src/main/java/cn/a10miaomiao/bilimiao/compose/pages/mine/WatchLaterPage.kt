@@ -50,6 +50,7 @@ import cn.a10miaomiao.bilimiao.compose.components.dialogs.MessageDialogState
 import cn.a10miaomiao.bilimiao.compose.components.list.ListStateBox
 import cn.a10miaomiao.bilimiao.compose.components.list.SwipeToRefresh
 import cn.a10miaomiao.bilimiao.compose.components.video.VideoItemBox
+import cn.a10miaomiao.bilimiao.compose.pages.playlist.PlayListPage
 import com.a10miaomiao.bilimiao.comm.delegate.player.BasePlayerDelegate
 import com.a10miaomiao.bilimiao.comm.delegate.player.VideoPlayerSource
 import com.a10miaomiao.bilimiao.comm.entity.MessageInfo
@@ -299,14 +300,25 @@ private class WatchLaterPageViewModel(
 
     fun openVideo(item: ToViewItemInfo) {
         if (isAutoPlay && playerStore.state.aid != item.aid.toString()) {
-            PopTip.show("此版本未提供播放")
+            playerDelegate.openPlayer(
+                VideoPlayerSource(
+                    mainTitle = item.title,
+                    title = item.title,
+                    coverUrl = item.pic,
+                    aid = item.aid.toString(),
+                    id = item.cid.toString(),
+                    ownerId = item.owner.mid,
+                    ownerName = item.owner.name,
+                )
+            )
+            setPlayList()
         } else {
             toVideoDetail(item)
         }
     }
 
     fun toPlaylist() {
-        PopTip.show("此版本未提供播放列表")
+        pageNavigation.navigate(PlayListPage())
     }
 
     fun toVideoDetail(item: ToViewItemInfo) {

@@ -1,7 +1,7 @@
 package com.a10miaomiao.bilimiao.comm.entity.user
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 
 @Parcelize

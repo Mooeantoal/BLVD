@@ -132,7 +132,7 @@ private class ReplyDetailContentViewModel(
     }
 
     private fun addNewReply(reply: VideoCommentReplyInfo) {
-        // 使用VideoCommentReplyInfo作为通用回复实体，已实现功能
+        // TODO: 自定义通用Reply实体类
         refreshList()
     }
 
