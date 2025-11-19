@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "cn.a10miaomiao.bilimiao.benchmark"
-    compileSdk = 33
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -17,8 +17,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 33
+        minSdk = 21
+        targetSdk = 35
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

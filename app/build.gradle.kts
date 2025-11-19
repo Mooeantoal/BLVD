@@ -70,8 +70,6 @@ android {
         }
     }
 
-
-
     compileOptions {
         // Flag to enable support for the new language APIs
         isCoreLibraryDesugaringEnabled = true
@@ -82,7 +80,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
 
     lint {
         checkReleaseBuilds = false
