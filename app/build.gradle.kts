@@ -20,7 +20,7 @@ android {
         versionCode = 116
         versionName = "2.4.8"
 
-        flavorDimensions("default")
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -70,13 +70,7 @@ android {
         }
     }
 
-    productFlavors {
-        create("full") {
-            dimension = flavorDimensionList[0]
-            val channelName = project.properties["channel"] ?: "Unknown"
-            manifestPlaceholders["channel"] = channelName
-        }
-    }
+
 
     compileOptions {
         // Flag to enable support for the new language APIs
