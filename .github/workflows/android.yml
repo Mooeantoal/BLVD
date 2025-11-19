@@ -65,17 +65,16 @@ jobs:
         fi
         mv ${{ github.workspace }}/app/build/outputs/apk/full/release/app-full-release.apk $release_dir/bilimiao-${{ github.ref_name }}.apk
     
-    - name: Upload binaries to release (only for tags)
+    - name: Create Release (only for tags)
       if: steps.check_tag.outputs.is_tag == 'true'
-      uses: svenstaro/upload-release-action@v5
+      uses: softprops/action-gh-release@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ github.workspace }}/release/*.apk
-        tag: ${{ github.ref }}
-        release_name: bilimiao ${{ github.ref_name }}
+        files: ${{ github.workspace }}/release/*.apk
+        name: bilimiao ${{ github.ref_name }}
         overwrite: true
-        file_glob: true
         body: ""
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Upload debug APK as artifact (for branches)
       if: steps.check_tag.outputs.is_tag == 'false'
