@@ -29,7 +29,7 @@ object Versions {
     const val glide = "4.13.2"
     const val pbandk = "0.16.1-SNAPSHOT"
 
-    const val gsyVideoPlayer = "v10.0.0"
+    const val gsyVideoPlayer = "v8.3.5-release-jitpack"
 }
 
 object Libraries {
@@ -96,7 +96,7 @@ object Libraries {
     const val dialogX = "com.github.kongzue:DialogX:0.0.50.beta37"
     const val dialogXMaterialYou = "com.github.kongzue.DialogX:DialogXMaterialYou:0.0.50.beta20"
 
-    const val gsyVideoPlayer = "com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer-java:${Versions.gsyVideoPlayer}"
+    const val gsyVideoPlayer = "com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:${Versions.gsyVideoPlayer}"
 
     // 其他：极验验证
     const val sensebot = "com.geetest.sensebot:sensebot:4.3.8.1"
