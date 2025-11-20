@@ -2,9 +2,9 @@
 buildscript {
 
     extra.apply {
-        set("compile_sdk_version", 34)
-        set("build_tools_version", 34)
-        set("target_sdk_version", 34)
+        set("compile_sdk_version", 35)
+        set("build_tools_version", 35)
+        set("target_sdk_version", 35)
     }
 
     repositories {
@@ -19,8 +19,8 @@ buildscript {
 
 plugins {
     val kotlinVersion = "2.0.20"
-    id("com.android.application") version "7.4.2" apply false
-    id("com.android.library") version "7.4.2" apply false
+    id("com.android.application") version "8.1.0" apply false
+    id("com.android.library") version "8.1.0" apply false
     id("org.jetbrains.kotlin.android") version kotlinVersion apply false
     id("org.jetbrains.kotlin.plugin.compose") version kotlinVersion apply false
     id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion apply false
