@@ -49,7 +49,6 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".dev"
-            resValue("string", "app_name", "bilimiao dev")
             manifestPlaceholders["channel"] = "Development"
         }
         release {
