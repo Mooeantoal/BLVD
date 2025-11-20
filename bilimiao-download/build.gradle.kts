@@ -9,11 +9,11 @@ plugins {
 
 android {
     namespace = "cn.a10miaomiao.bilimiao.download"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
