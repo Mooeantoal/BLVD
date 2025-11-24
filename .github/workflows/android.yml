@@ -97,15 +97,14 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       with:
-        files: |
-          ${{ github.workspace }}/release/*.apk
+        files: ${{ github.workspace }}/release/*.apk
         name: bilimiao ${{ github.ref_name }}
         body: |
           Release bilimiao ${{ github.ref_name }}
           
           ## Downloads
-          - **GitHub Version**: bilimiao-github-${{ github.ref_name }}.apk (包含闭源组件)
-          - **FOSS Version**: bilimiao-foss-${{ github.ref_name }}.apk (纯开源版本)
+          - GitHub Version: bilimiao-github-${{ github.ref_name }}.apk (包含闭源组件)
+          - FOSS Version: bilimiao-foss-${{ github.ref_name }}.apk (纯开源版本)
         draft: false
         prerelease: false
       env:
