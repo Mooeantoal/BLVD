@@ -20,7 +20,7 @@ android {
         versionCode = 116
         versionName = "2.4.8"
 
-
+        flavorDimensions("default")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -49,6 +49,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "bilimiao dev")
             manifestPlaceholders["channel"] = "Development"
         }
         release {
@@ -69,6 +70,18 @@ android {
         }
     }
 
+    productFlavors {
+        create("full") {
+            dimension = flavorDimensionList[0]
+            val channelName = project.properties["channel"] ?: "Unknown"
+            manifestPlaceholders["channel"] = channelName
+        }
+        create("foss") {
+            dimension = flavorDimensionList[0]
+            manifestPlaceholders["channel"] = "FOSS"
+        }
+    }
+
     compileOptions {
         // Flag to enable support for the new language APIs
         isCoreLibraryDesugaringEnabled = true
@@ -79,6 +92,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 
     lint {
         checkReleaseBuilds = false
@@ -149,10 +163,10 @@ dependencies {
     implementation(project(":DanmakuFlameMaster"))
 
     // 闭源库：百度统计、极验验证
-    implementation(Libraries.baiduMobstat)
-    implementation(Libraries.sensebot)
+    "fullImplementation"(Libraries.baiduMobstat)
+    "fullImplementation"(Libraries.sensebot)
     // av1解码器：https://github.com/androidx/media/tree/release/libraries/decoder_av1
-    implementation(files("libs/lib-decoder-av1-release.aar"))
+    "fullImplementation"(files("libs/lib-decoder-av1-release.aar"))
 
     testImplementation(Libraries.junit)
     androidTestImplementation(Libraries.androidxJunit)

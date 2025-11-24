@@ -10,7 +10,5 @@
 
     <string name="playing_notification_description">播放通知提供播放暂停等操作。</string>
     <string name="playing_notification_name">播放通知</string>
-    
-    <string name="geetest_validator">极验验证</string>
 
 </resources>

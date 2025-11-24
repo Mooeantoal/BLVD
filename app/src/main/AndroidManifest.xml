@@ -86,11 +86,6 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-        
-        <activity
-            android:name=".activity.GeetestValidatorActivity"
-            android:label="@string/geetest_validator"
-            android:theme="@style/Theme.Bilimiao"/>
     </application>
 
 </manifest>

@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -43,8 +43,7 @@ android {
     }
 
     namespace = "cn.a10miaomiao.bilimiao.compose"
-    
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

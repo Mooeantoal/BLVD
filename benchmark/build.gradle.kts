@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "cn.a10miaomiao.bilimiao.benchmark"
-    compileSdk = 35
+    compileSdk = 33
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -17,8 +17,8 @@ android {
     }
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 35
+        minSdk = 23
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -38,7 +38,7 @@ android {
 
     flavorDimensions += listOf("default")
     productFlavors {
-        create("full") { dimension = "default" }
+        create("foss") { dimension = "default" }
     }
 
     targetProjectPath = ":app"
