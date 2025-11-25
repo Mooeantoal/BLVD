@@ -25,6 +25,9 @@ jobs:
 
     - name: Set up Android SDK
       uses: android-actions/setup-android@v3
+      with:
+        api-level: 35
+        build-tools: 35.0.0
 
     - name: Cache Gradle packages
       uses: actions/cache@v4
@@ -54,19 +57,21 @@ jobs:
         # 执行下载密钥库的命令
         ${{ secrets.BASH_DOWNLOAD_JKS }}
 
+    - name: Clean Gradle cache
+      run: ./gradlew clean
+
     - name: Build with Gradle (Debug)
       if: !startsWith(github.ref, 'refs/tags/')
       run: |
         # PR或非标签推送时构建debug版本
-        ./gradlew assembleDebug
+        ./gradlew assembleDebug --no-daemon --stacktrace
 
     - name: Build with Gradle (Release)
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         # 标签推送时构建release版本
-        ./gradlew clean
-        ./gradlew -Pchannel=Github app:assembleFullRelease
-        ./gradlew app:assembleFossRelease
+        ./gradlew -Pchannel=Github app:assembleFullRelease --no-daemon --stacktrace
+        ./gradlew app:assembleFossRelease --no-daemon --stacktrace
 
     - name: Upload Debug Artifacts
       if: !startsWith(github.ref, 'refs/tags/')
