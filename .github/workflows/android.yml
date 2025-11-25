@@ -52,8 +52,7 @@ jobs:
 
     - name: Download keystore for release builds
       if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        ${{ secrets.BASH_DOWNLOAD_JKS }}
+      run: ${{ secrets.BASH_DOWNLOAD_JKS }}
 
     - name: Clean Gradle cache
       run: ./gradlew clean
