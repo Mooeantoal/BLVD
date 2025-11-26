@@ -16,22 +16,36 @@ def modify_compose_fragment():
     
     original_content = content
     
-    # 1. 替换导入
+    # 尝试替换 BlankPage 为 BlankPage()
+    # 注意：这里可能会匹配到 import 语句，所以要小心
+    # import cn.a10miaomiao.bilimiao.compose.pages.BlankPage 是不需要加 () 的
+    
+    # 替换 MyNavHost 中的 BlankPage
+    content = content.replace(
+        'MyNavHost(composeNav, BlankPage)',
+        'MyNavHost(composeNav, BlankPage())'
+    )
+    
+    # 替换 goBackHome 中的 BlankPage
+    content = content.replace(
+        'composeNav.popBackStack(BlankPage, false)',
+        'composeNav.popBackStack(BlankPage(), false)'
+    )
+    
+    # 如果还没有替换（可能是原始的 HomePage），则尝试替换 HomePage
+    content = content.replace(
+        'MyNavHost(composeNav, HomePage)',
+        'MyNavHost(composeNav, BlankPage())'
+    )
+    content = content.replace(
+        'composeNav.popBackStack(HomePage, false)',
+        'composeNav.popBackStack(BlankPage(), false)'
+    )
+    
+    # 替换导入（如果还是 HomePage）
     content = content.replace(
         'import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage',
         'import cn.a10miaomiao.bilimiao.compose.pages.BlankPage'
-    )
-    
-    # 2. 替换 MyNavHost 中的 HomePage
-    content = content.replace(
-        'MyNavHost(composeNav, HomePage)',
-        'MyNavHost(composeNav, BlankPage)'
-    )
-    
-    # 3. 替换 goBackHome 中的 HomePage
-    content = content.replace(
-        'composeNav.popBackStack(HomePage, false)',
-        'composeNav.popBackStack(BlankPage, false)'
     )
     
     if content == original_content:

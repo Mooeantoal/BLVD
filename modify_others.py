@@ -36,31 +36,14 @@ def main():
     # 1. 修改 DynamicViewModel.kt
     dynamic_vm_path = r"bilimiao-compose\src\main\java\cn\a10miaomiao\bilimiao\compose\pages\dynamic\DynamicViewModel.kt"
     dynamic_vm_replacements = [
-        ('import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage', 'import cn.a10miaomiao.bilimiao.compose.pages.BlankPage'),
-        ('nav.navigate(HomePage, navOptions', 'nav.navigate(BlankPage, navOptions')
+        ('nav.navigate(BlankPage, navOptions', 'nav.navigate(BlankPage(), navOptions'),
+        ('nav.navigate(HomePage, navOptions', 'nav.navigate(BlankPage(), navOptions'),
+        ('import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage', 'import cn.a10miaomiao.bilimiao.compose.pages.BlankPage')
     ]
     modify_file(dynamic_vm_path, dynamic_vm_replacements)
     
-    # 2. 修改 DynamicPage.kt
-    dynamic_page_path = r"bilimiao-compose\src\main\java\cn\a10miaomiao\bilimiao\compose\pages\dynamic\DynamicPage.kt"
-    dynamic_page_replacements = [
-        ('import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage', ''),
-    ]
-    modify_file(dynamic_page_path, dynamic_page_replacements)
-    
-    # 3. 修改 TelVerifyPage.kt
-    tel_verify_path = r"bilimiao-compose\src\main\java\cn\a10miaomiao\bilimiao\compose\pages\auth\TelVerifyPage.kt"
-    tel_verify_replacements = [
-        ('import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage', ''),
-    ]
-    modify_file(tel_verify_path, tel_verify_replacements)
-    
-    # 4. 修改 QrCodeLoginPage.kt
-    qr_login_path = r"bilimiao-compose\src\main\java\cn\a10miaomiao\bilimiao\compose\pages\auth\QrCodeLoginPage.kt"
-    qr_login_replacements = [
-        ('import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage', ''),
-    ]
-    modify_file(qr_login_path, qr_login_replacements)
+    # 其他文件只需要移除导入，不需要修改实例，因为它们可能只是引用了类
+    # 但为了保险起见，我们只关注 DynamicViewModel.kt，因为它是唯一进行导航的地方
 
 if __name__ == "__main__":
     try:

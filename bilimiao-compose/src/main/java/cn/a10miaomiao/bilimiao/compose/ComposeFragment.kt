@@ -198,7 +198,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
                                         .nestedScroll(connection)
                                         .background(MaterialTheme.colorScheme.background),
                                 ) {
-                                    MyNavHost(composeNav, BlankPage)
+                                    MyNavHost(composeNav, BlankPage())
                                 }
                                 val bottomSheetPage = bottomSheetState.page.collectAsState().value
                                 if (bottomSheetPage != null) {
@@ -271,7 +271,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
     }
 
     fun goBackHome() {
-        composeNav.popBackStack(BlankPage, false)
+        composeNav.popBackStack(BlankPage(), false)
     }
 
     fun openBottomSheet(page: ComposePage) {

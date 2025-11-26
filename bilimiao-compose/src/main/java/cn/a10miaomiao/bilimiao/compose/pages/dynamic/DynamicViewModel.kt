@@ -35,7 +35,7 @@ class DynamicViewModel(
 
     fun toHomePage() {
         val nav = pageNavigation.hostController
-        nav.navigate(BlankPage, navOptions {
+        nav.navigate(BlankPage(), navOptions {
             popUpTo(nav.graph.findStartDestination().id) {
                 saveState = true
             }
