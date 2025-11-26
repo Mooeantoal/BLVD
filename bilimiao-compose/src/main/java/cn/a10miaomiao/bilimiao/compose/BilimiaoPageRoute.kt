@@ -85,8 +85,8 @@ class BilimiaoPageRoute (
         composable<BlankPage>()
         composable<TestPage>()
 
-        // home
-        composable<HomePage>()
+        // home - 精简版：移除主页（推荐、时光机等功能）
+        // composable<HomePage>()
 //        builder.composable<HomePage> {
 //            val page = it.toRoute<HomePage>()
 //            page.Content()
@@ -203,39 +203,15 @@ class BilimiaoPageRoute (
         composable<SelectProxyServerPage>()
         composable<AboutPage>()
 
-        // time
-        composable<TimeSettingPage>()
-        composable<TimeRegionDetailPage>()
+        // time - 精简版：移除时光机功能
+        // composable<TimeSettingPage>()
+        // composable<TimeRegionDetailPage>()
 
         // mine
-        composable<MyBangumiPage>(
-            deepLinks = listOf(
-                navDeepLink<MyBangumiPage>(
-                    basePath = "bilimiao://mine/bangumi"
-                )
-            )
-        )
-        composable<MyFollowPage>(
-            deepLinks = listOf(
-                navDeepLink<MyFollowPage>(
-                    basePath = "bilimiao://mine/follow"
-                )
-            )
-        )
-        composable<HistoryPage>(
-            deepLinks = listOf(
-                navDeepLink<HistoryPage>(
-                    basePath = "bilimiao://mine/history"
-                )
-            )
-        )
-        composable<WatchLaterPage>(
-            deepLinks = listOf(
-                navDeepLink<WatchLaterPage>(
-                    basePath = "bilimiao://mine/watchlater"
-                )
-            )
-        )
+        // composable<MyBangumiPage>(...)
+        // composable<MyFollowPage>(...)
+        // composable<HistoryPage>(...)
+        // composable<WatchLaterPage>(...)
 
         // user
         composable<UserSpacePage>(

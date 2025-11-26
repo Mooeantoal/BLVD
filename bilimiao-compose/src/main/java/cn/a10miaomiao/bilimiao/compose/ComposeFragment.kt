@@ -88,7 +88,7 @@ import cn.a10miaomiao.bilimiao.compose.components.dialogs.MessageDialog
 import cn.a10miaomiao.bilimiao.compose.components.dialogs.MessageDialogState
 import cn.a10miaomiao.bilimiao.compose.components.image.MyImagePreviewer
 import cn.a10miaomiao.bilimiao.compose.components.image.provider.ImagePreviewerProvider
-import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage
+import cn.a10miaomiao.bilimiao.compose.pages.BlankPage
 import com.a10miaomiao.bilimiao.comm.mypage.MenuItemPropInfo
 import com.a10miaomiao.bilimiao.comm.mypage.MyPage
 import com.a10miaomiao.bilimiao.comm.mypage.myPageConfig
@@ -198,7 +198,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
                                         .nestedScroll(connection)
                                         .background(MaterialTheme.colorScheme.background),
                                 ) {
-                                    MyNavHost(composeNav, HomePage)
+                                    MyNavHost(composeNav, BlankPage)
                                 }
                                 val bottomSheetPage = bottomSheetState.page.collectAsState().value
                                 if (bottomSheetPage != null) {
@@ -271,7 +271,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
     }
 
     fun goBackHome() {
-        composeNav.popBackStack(HomePage, false)
+        composeNav.popBackStack(BlankPage, false)
     }
 
     fun openBottomSheet(page: ComposePage) {

@@ -32,7 +32,7 @@ import cn.a10miaomiao.bilimiao.compose.pages.dynamic.components.DynamicUpperList
 import cn.a10miaomiao.bilimiao.compose.pages.dynamic.content.DynamicAllListContent
 import cn.a10miaomiao.bilimiao.compose.pages.dynamic.content.DynamicUpperContent
 import cn.a10miaomiao.bilimiao.compose.pages.dynamic.content.DynamicVideoListContent
-import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage
+
 import cn.a10miaomiao.bilimiao.compose.pages.home.content.HomePopularContent
 import cn.a10miaomiao.bilimiao.compose.pages.home.content.HomeRecommendContent
 import cn.a10miaomiao.bilimiao.compose.pages.home.content.HomeTimeMachineContent

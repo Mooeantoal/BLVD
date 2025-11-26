@@ -7,7 +7,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.navOptions
 import bilibili.app.dynamic.v2.UpListItem
 import cn.a10miaomiao.bilimiao.compose.common.navigation.PageNavigation
-import cn.a10miaomiao.bilimiao.compose.pages.home.HomePage
+import cn.a10miaomiao.bilimiao.compose.pages.BlankPage
 import com.a10miaomiao.bilimiao.comm.mypage.MenuItemPropInfo
 import com.a10miaomiao.bilimiao.comm.mypage.MenuKeys
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +35,7 @@ class DynamicViewModel(
 
     fun toHomePage() {
         val nav = pageNavigation.hostController
-        nav.navigate(HomePage, navOptions {
+        nav.navigate(BlankPage, navOptions {
             popUpTo(nav.graph.findStartDestination().id) {
                 saveState = true
             }
