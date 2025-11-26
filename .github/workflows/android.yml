@@ -23,10 +23,17 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: |
-        ./gradlew app:assembleDebug
-    - name: Upload APK
+        ./gradlew app:assembleFullDebug
+        ./gradlew app:assembleFossDebug
+    - name: Upload Full APK
       uses: actions/upload-artifact@v4
       with:
-        name: debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: bilimiao-full-debug
+        path: app/build/outputs/apk/full/debug/app-full-debug.apk
+        retention-days: 30
+    - name: Upload FOSS APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: bilimiao-foss-debug
+        path: app/build/outputs/apk/foss/debug/app-foss-debug.apk
         retention-days: 30
