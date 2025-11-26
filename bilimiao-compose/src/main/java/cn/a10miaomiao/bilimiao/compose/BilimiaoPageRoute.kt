@@ -84,6 +84,7 @@ class BilimiaoPageRoute (
     fun initRoute() {
         composable<BlankPage>()
         composable<TestPage>()
+        composable<cn.a10miaomiao.bilimiao.compose.pages.StartPage>()
 
         // home - 精简版：移除主页（推荐、时光机等功能）
         // composable<HomePage>()

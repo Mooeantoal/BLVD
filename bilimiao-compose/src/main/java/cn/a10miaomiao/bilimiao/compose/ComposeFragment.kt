@@ -88,7 +88,7 @@ import cn.a10miaomiao.bilimiao.compose.components.dialogs.MessageDialog
 import cn.a10miaomiao.bilimiao.compose.components.dialogs.MessageDialogState
 import cn.a10miaomiao.bilimiao.compose.components.image.MyImagePreviewer
 import cn.a10miaomiao.bilimiao.compose.components.image.provider.ImagePreviewerProvider
-import cn.a10miaomiao.bilimiao.compose.pages.BlankPage
+import cn.a10miaomiao.bilimiao.compose.pages.StartPage
 import com.a10miaomiao.bilimiao.comm.mypage.MenuItemPropInfo
 import com.a10miaomiao.bilimiao.comm.mypage.MyPage
 import com.a10miaomiao.bilimiao.comm.mypage.myPageConfig
@@ -198,7 +198,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
                                         .nestedScroll(connection)
                                         .background(MaterialTheme.colorScheme.background),
                                 ) {
-                                    MyNavHost(composeNav, BlankPage())
+                                    MyNavHost(composeNav, StartPage())
                                 }
                                 val bottomSheetPage = bottomSheetState.page.collectAsState().value
                                 if (bottomSheetPage != null) {
@@ -213,7 +213,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
                             }
                             MessageDialog(messageDialogState)
                         }
-                        MyStartView(startViewWrapper = startViewWrapper)
+                        // MyStartView(startViewWrapper = startViewWrapper) // 已移至 StartPage
                     }
                 }
             }
@@ -271,7 +271,7 @@ class ComposeFragment : Fragment(), MyPage, DIAware, OnBackPressedDispatcherOwne
     }
 
     fun goBackHome() {
-        composeNav.popBackStack(BlankPage(), false)
+        composeNav.popBackStack(StartPage(), false)
     }
 
     fun openBottomSheet(page: ComposePage) {
